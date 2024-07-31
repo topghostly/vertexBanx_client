@@ -1,26 +1,70 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
+import gsap from "gsap";
 
 import flag from "/images/flag.png";
 
-function TopSection() {
+import "../../../index.css";
+
+function TopSection({ loading }) {
   const navigate = useNavigate();
+
+  const animationRef = useRef(null);
+  const animationRef0 = useRef(null);
 
   const [userDetails, setUserDetails] = useState(() => {
     const savedUserDetails = localStorage.getItem("userDetails");
     return savedUserDetails ? JSON.parse(savedUserDetails) : null;
   });
 
+  useEffect(() => {
+    if (loading) {
+      gsap.fromTo(
+        animationRef.current,
+        {
+          transform: "translateX(-80%)",
+        },
+        {
+          transform: "translateX(80%)",
+          duration: 1,
+          repeat: -1,
+          yoyo: true,
+          ease: "power4.in",
+        }
+      );
+      gsap.fromTo(
+        animationRef0.current,
+        {
+          transform: "translateX(-80%)",
+        },
+        {
+          transform: "translateX(80%)",
+          duration: 1,
+          repeat: -1,
+          yoyo: true,
+          ease: "power4.in",
+        }
+      );
+    }
+  });
   return (
     <Wrapper>
       <Holder>
         <div className="left">
           <p className="light-grey">Welcome back</p>
-          <h3 className="big">
-            {userDetails.fullName.firstName} {userDetails.fullName.lastName}
-          </h3>
+          <div className="name-holder">
+            {loading ? (
+              <PlaceHolder>
+                <LoaderAnim ref={animationRef} />
+              </PlaceHolder>
+            ) : (
+              <h3 className="big">
+                {userDetails.fullName.firstName} {userDetails.fullName.lastName}
+              </h3>
+            )}
+          </div>
         </div>
         <div className="left-mobile">
           <div className="avatar">
@@ -74,9 +118,17 @@ function TopSection() {
             </svg>
           </div>
           <p className="light-grey">Welcome back</p>
-          <h3 className="big">
-            {userDetails.fullName.firstName} {userDetails.fullName.lastName}
-          </h3>
+          <div className="name-holder">
+            {loading ? (
+              <PlaceHolder>
+                <LoaderAnim ref={animationRef0} />
+              </PlaceHolder>
+            ) : (
+              <h3 className="big">
+                {userDetails.fullName.firstName} {userDetails.fullName.lastName}
+              </h3>
+            )}
+          </div>
           <div className="naira">
             <img src={flag} alt="nigerian-flag" />
             <p>Nigerian Naira</p>
@@ -222,6 +274,30 @@ const Wrapper = styled.section`
   }
 `;
 
+const PlaceHolder = styled.div`
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  background-color: none;
+  height: 30px;
+`;
+const LoaderAnim = styled.div`
+  display: absolute;
+  transform: skewX(200);
+  width: 100%;
+  top: -20px;
+  left: 0;
+  background: linear-gradient(
+    90deg,
+    #f3f3f36e 10%,
+    #d1d1d1 30%,
+    #d1d1d1 70%,
+    #f3f3f36e 90%
+  );
+  height: 100%;
+  animation: SwipeAnimation 1s cubic-bezier(0.77, 0, 0.175, 1) infinite;
+`;
+
 const Holder = styled.div`
   position: relative;
   width: 100%;
@@ -231,6 +307,7 @@ const Holder = styled.div`
   align-items: center;
 
   .left {
+    position: relative;
     display: flex;
     flex-direction: column;
     gap: 3px;
@@ -244,6 +321,11 @@ const Holder = styled.div`
     p {
       font-size: 14px;
       color: #919191;
+    }
+    .name-holder {
+      width: fit-content;
+      min-width: 185px;
+      height: 30px;
     }
   }
 
@@ -276,6 +358,12 @@ const Holder = styled.div`
     display: none;
     flex-direction: column;
     gap: 3px;
+
+    .name-holder {
+      width: fit-content;
+      min-width: 185px;
+      height: 30px;
+    }
 
     @media screen and (max-width: 540px) {
       display: flex;

@@ -7,7 +7,6 @@ import TopSection from "../dashContent/TopSection";
 import MidSection from "../dashContent/MidSection";
 import { orbit } from "ldrs";
 import gsap from "gsap";
-import RefreshDatabase from "../../../../util/RefreshData";
 
 function Homepage({ alert, setAlert }) {
   orbit.register();
@@ -76,21 +75,18 @@ function Homepage({ alert, setAlert }) {
       }}
     >
       <VerifySession setAlert={setAlert} setLoading={setLoading} />
-      {!loading && <TopSection />}
-      {!loading && (
-        <MidSection
-          refreshDetails={refreshDetails}
-          setRefreshDetails={setRefreshDetails}
-        />
-      )}
-      {!loading && <RefreshDatabase setRefreshDetails={setRefreshDetails} />}
-
-      <LoadingWrapper ref={wrapperRef}>
+      <TopSection loading={loading} />
+      <MidSection
+        refreshDetails={refreshDetails}
+        setRefreshDetails={setRefreshDetails}
+        loading={loading}
+      />
+      {/* {!loading && <RefreshDatabase setRefreshDetails={setRefreshDetails} />} */}
+      {/* <LoadingWrapper ref={wrapperRef}>
         <LoadingAnimation>
           <l-orbit size="40" speed="1.5" color="black"></l-orbit>
         </LoadingAnimation>
-      </LoadingWrapper>
-
+      </LoadingWrapper> */}
       <CreditAlert ref={alertRef}>
         <p>Youre account has been credited</p>
       </CreditAlert>
