@@ -67,7 +67,7 @@ function MobileBottomNav() {
             </svg>
           </div>
         </Lnks>
-        <Lnks>
+        <Lnks to={"/u/overview/profile"}>
           <div className="svg">
             <svg
               xmlns="http://www.w3.org/2000/svg"

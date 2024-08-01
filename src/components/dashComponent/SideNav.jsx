@@ -71,7 +71,7 @@ function SideNav({ page, setPage }) {
       </TopLinks>
       <p className="header">SETTINGS</p>
       <TopLinks>
-        <Lnks>
+        <Lnks to={"/u/overview/profile"}>
           <div className="svg">
             <svg
               xmlns="http://www.w3.org/2000/svg"

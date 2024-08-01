@@ -1,8 +1,23 @@
+import { motion } from "framer-motion";
 import React from "react";
 import styled from "styled-components";
 function History() {
   return (
-    <Wrapper>
+    <Wrapper
+      initial={{
+        opacity: 0,
+      }}
+      animate={{
+        opacity: 1,
+      }}
+      exit={{
+        opacity: 0,
+      }}
+      transition={{
+        delay: 0.2,
+        duration: 0.2,
+      }}
+    >
       <section className="heading">
         <h3>Transaction Statement</h3>
         <p className="small">Browse all transactions you've made</p>
@@ -95,7 +110,7 @@ function History() {
   );
 }
 
-const Wrapper = styled.section`
+const Wrapper = styled(motion.div)`
   position: relative;
   display: flex;
   flex-direction: column;
@@ -105,6 +120,7 @@ const Wrapper = styled.section`
     display: flex;
     flex-direction: column;
     gap: 5px;
+    text-align: center;
     h3 {
       font-size: 30px;
     }

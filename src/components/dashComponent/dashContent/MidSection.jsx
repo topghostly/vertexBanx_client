@@ -16,10 +16,10 @@ function MidSection({ setRefreshDetails, refreshDetails, loading }) {
       gsap.fromTo(
         animationRef.current,
         {
-          transform: "translateX(-80%)",
+          transform: "translateX(-88%)",
         },
         {
-          transform: "translateX(80%)",
+          transform: "translateX(88%)",
           duration: 1,
           repeat: -1,
           yoyo: true,
@@ -29,10 +29,10 @@ function MidSection({ setRefreshDetails, refreshDetails, loading }) {
       gsap.fromTo(
         animationRef1.current,
         {
-          transform: "translateX(-80%)",
+          transform: "translateX(-88%)",
         },
         {
-          transform: "translateX(80%)",
+          transform: "translateX(88%)",
           duration: 1,
           repeat: -1,
           yoyo: true,
@@ -43,10 +43,10 @@ function MidSection({ setRefreshDetails, refreshDetails, loading }) {
       gsap.fromTo(
         animationRef2.current,
         {
-          transform: "translateX(-80%)",
+          transform: "translateX(-88%)",
         },
         {
-          transform: "translateX(80%)",
+          transform: "translateX(88%)",
           duration: 1,
           repeat: -1,
           yoyo: true,
@@ -69,7 +69,9 @@ function MidSection({ setRefreshDetails, refreshDetails, loading }) {
         </div>
         <Recent>
           <div className="head">
-            <ViewAllLink className="heading">View all</ViewAllLink>
+            <ViewAllLink className="heading" to={"/u/overview/statement"}>
+              View all
+            </ViewAllLink>
           </div>
           {loading ? (
             <PlaceHolder>
@@ -82,7 +84,7 @@ function MidSection({ setRefreshDetails, refreshDetails, loading }) {
               <Tab>
                 <div className="icon"></div>
                 <div className="text">
-                  <p>Azeez Chritiana Sangotope</p>
+                  <p>Chritiana Sangotope</p>
                 </div>
                 <div className="amount">
                   <h2>₦23,050.00</h2>
@@ -91,7 +93,7 @@ function MidSection({ setRefreshDetails, refreshDetails, loading }) {
               <Tab>
                 <div className="icon"></div>
                 <div className="text">
-                  <p>Azeez Chritiana Sangotope</p>
+                  <p>Chritiana Sangotope</p>
                 </div>
                 <div className="amount">
                   <h2>₦23,050.00</h2>
@@ -100,7 +102,7 @@ function MidSection({ setRefreshDetails, refreshDetails, loading }) {
               <Tab>
                 <div className="icon"></div>
                 <div className="text">
-                  <p>Azeez Chritiana Sangotope</p>
+                  <p>Chritiana Sangotope</p>
                 </div>
                 <div className="amount">
                   <h2>₦23,050.00</h2>
@@ -181,6 +183,10 @@ const Recent = styled.div`
   flex-direction: column;
   gap: 5px;
 
+  @media screen and (max-width: 560px) {
+    padding: 20px 0px;
+  }
+
   .head {
     position: relative;
     width: 100%;
@@ -188,6 +194,10 @@ const Recent = styled.div`
     display: flex;
     justify-content: flex-end;
     width: 100%;
+
+    @media screen and (max-width: 560px) {
+      padding-right: 20px;
+    }
   }
 
   .tab-holder {

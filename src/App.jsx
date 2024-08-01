@@ -22,6 +22,7 @@ import Auth from "./pages/Auth";
 import Alert from "./components/dashComponent/Alert";
 import History from "./components/dashComponent/dashPages/History";
 import Profile from "./components/dashComponent/dashPages/Profile";
+import Admin from "./pages/Admin";
 
 function App() {
   const navigate = useNavigate();
@@ -193,6 +194,7 @@ function App() {
             <Route path="statement" element={<History setAlert={setAlert} />} />
             <Route path="profile" element={<Profile setAlert={setAlert} />} />
           </Route>
+          <Route path="/admin" element={<Admin />} />
         </Routes>
         <Alert alert={alert} setAlert={setAlert} />
         <BackDrop ref={backDropRef} />
