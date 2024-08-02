@@ -1,17 +1,13 @@
 import React, { useEffect, useState, useRef } from "react";
 import styled from "styled-components";
-import currencyConverter from "../../../../util/balanceConverter";
 import gsap from "gsap";
+import GetBalance from "../micro/GetBalance";
+import GetAcctNum from "../micro/GetAcctNum";
 
 function AcctBalance({ refreshDetails, setRefreshDetails, loading }) {
   const [updatedValue, setUpdateValue] = useState(0);
   const animationRef = useRef(null);
   const animationRef6 = useRef(null);
-
-  const [userDetails, setUserDetails] = useState(() => {
-    const savedUserDetails = localStorage.getItem("userDetails");
-    return savedUserDetails ? JSON.parse(savedUserDetails) : null;
-  });
 
   useEffect(() => {
     if (refreshDetails) {
@@ -85,9 +81,10 @@ function AcctBalance({ refreshDetails, setRefreshDetails, loading }) {
                 <LoaderAnim ref={animationRef} />
               </PlaceHolder>
             ) : (
-              <h2 className="balance">
-                {currencyConverter(userDetails.balance)}
-              </h2>
+              <GetBalance
+                refreshDetails={refreshDetails}
+                setRefreshDetails={setRefreshDetails}
+              />
             )}
           </div>
 
@@ -97,7 +94,7 @@ function AcctBalance({ refreshDetails, setRefreshDetails, loading }) {
                 <LoaderAnim ref={animationRef6} />
               </PlaceHolder>
             ) : (
-              <p className="small">A/C No: {userDetails.AccountNumber}</p>
+              <GetAcctNum />
             )}
           </div>
         </div>

@@ -15,22 +15,18 @@ function Homepage({ alert, setAlert }) {
   const wrapperRef = useRef(null);
   const alertRef = useRef(null);
 
-  useEffect(() => {
-    if (loading) {
-      gsap.to(wrapperRef.current, {
-        opacity: 1,
-      });
-    }
-    if (!loading) {
-      gsap.to(wrapperRef.current, {
-        opacity: 0,
-      });
-    }
-  }, [loading]);
-
-  useEffect(() => {
-    console.log("this Page has reloaded ");
-  });
+  // useEffect(() => {
+  //   if (loading) {
+  //     gsap.to(wrapperRef.current, {
+  //       opacity: 1,
+  //     });
+  //   }
+  //   if (!loading) {
+  //     gsap.to(wrapperRef.current, {
+  //       opacity: 0,
+  //     });
+  //   }
+  // }, [loading]);
 
   // Credit alert logic
   useEffect(() => {
@@ -81,12 +77,6 @@ function Homepage({ alert, setAlert }) {
         setRefreshDetails={setRefreshDetails}
         loading={loading}
       />
-      {/* {!loading && <RefreshDatabase setRefreshDetails={setRefreshDetails} />} */}
-      {/* <LoadingWrapper ref={wrapperRef}>
-        <LoadingAnimation>
-          <l-orbit size="40" speed="1.5" color="black"></l-orbit>
-        </LoadingAnimation>
-      </LoadingWrapper> */}
       <CreditAlert ref={alertRef}>
         <p>Youre account has been credited</p>
       </CreditAlert>

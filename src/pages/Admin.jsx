@@ -5,7 +5,7 @@ function Admin() {
   return (
     <Wrapper>
       <Holder>
-        <Auth>
+        {/* <Auth>
           <div className="logo">
             <img src={logo} alt="admin-logo" />
           </div>
@@ -14,8 +14,14 @@ function Admin() {
             <input type="password" placeholder="Password" />
             <button>Sign in</button>
           </form>
-        </Auth>
-        <MainPage></MainPage>
+        </Auth> */}
+        <MainPage>
+          <nav>
+            <div className="logo">
+              <img src={logo} alt="admin-logo" />
+            </div>
+          </nav>
+        </MainPage>
       </Holder>
     </Wrapper>
   );
@@ -86,6 +92,30 @@ const Auth = styled.section`
       color: white;
       border-radius: 5px;
       cursor: pointer;
+    }
+  }
+`;
+
+const MainPage = styled.section`
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  nav {
+    width: 100%;
+    height: 80px;
+    border-bottom: solid 2px var(--medium-grey);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .logo {
+      width: 180px;
+      margin: 0px auto;
+      pointer-events: none;
+      img {
+        width: 100%;
+        position: relative;
+      }
     }
   }
 `;

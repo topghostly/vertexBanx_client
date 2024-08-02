@@ -5,8 +5,6 @@ import { useNavigate } from "react-router-dom";
 const RefreshDatabase = ({ setRefreshDetails }) => {
   const navigate = useNavigate();
 
-  console.log("RefreshDatabase rendered");
-
   const [userDetails, setUserDetails] = useState(() => {
     const savedUserDetails = localStorage.getItem("userDetails");
     return savedUserDetails ? JSON.parse(savedUserDetails) : null;

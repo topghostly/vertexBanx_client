@@ -7,9 +7,6 @@ import { Outlet } from "react-router-dom";
 import MobileBottomNav from "../components/dashComponent/MobileBottomNav";
 
 function Dashboard() {
-  useEffect(() => {
-    console.log("The dashboard has been reloaded");
-  });
   return (
     <Wrapper>
       <Holder>

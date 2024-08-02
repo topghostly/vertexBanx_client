@@ -7,17 +7,13 @@ import gsap from "gsap";
 import flag from "/images/flag.png";
 
 import "../../../index.css";
+import Getusername from "../micro/Getusername";
 
 function TopSection({ loading }) {
   const navigate = useNavigate();
 
   const animationRef = useRef(null);
   const animationRef0 = useRef(null);
-
-  const [userDetails, setUserDetails] = useState(() => {
-    const savedUserDetails = localStorage.getItem("userDetails");
-    return savedUserDetails ? JSON.parse(savedUserDetails) : null;
-  });
 
   useEffect(() => {
     if (loading) {
@@ -60,9 +56,7 @@ function TopSection({ loading }) {
                 <LoaderAnim ref={animationRef} />
               </PlaceHolder>
             ) : (
-              <h3 className="big">
-                {userDetails.fullName.firstName} {userDetails.fullName.lastName}
-              </h3>
+              <Getusername />
             )}
           </div>
         </div>
@@ -124,9 +118,7 @@ function TopSection({ loading }) {
                 <LoaderAnim ref={animationRef0} />
               </PlaceHolder>
             ) : (
-              <h3 className="big">
-                {userDetails.fullName.firstName} {userDetails.fullName.lastName}
-              </h3>
+              <Getusername />
             )}
           </div>
           <div className="naira">
