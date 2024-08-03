@@ -6,6 +6,7 @@ import ActivityBar from "./ActivityBar";
 import gsap from "gsap";
 
 import { Link } from "react-router-dom";
+import GetHistory from "../micro/GetHistory";
 
 function MidSection({ setRefreshDetails, refreshDetails, loading }) {
   const animationRef = useRef(null);
@@ -80,35 +81,7 @@ function MidSection({ setRefreshDetails, refreshDetails, loading }) {
               <LoaderAnim ref={animationRef2} />
             </PlaceHolder>
           ) : (
-            <div className="tab-holder">
-              <Tab>
-                <div className="icon"></div>
-                <div className="text">
-                  <p>Chritiana Sangotope</p>
-                </div>
-                <div className="amount">
-                  <h2>₦23,050.00</h2>
-                </div>
-              </Tab>
-              <Tab>
-                <div className="icon"></div>
-                <div className="text">
-                  <p>Chritiana Sangotope</p>
-                </div>
-                <div className="amount">
-                  <h2>₦23,050.00</h2>
-                </div>
-              </Tab>
-              <Tab>
-                <div className="icon"></div>
-                <div className="text">
-                  <p>Chritiana Sangotope</p>
-                </div>
-                <div className="amount">
-                  <h2>₦23,050.00</h2>
-                </div>
-              </Tab>
-            </div>
+            <GetHistory />
           )}
         </Recent>
       </RightSide>

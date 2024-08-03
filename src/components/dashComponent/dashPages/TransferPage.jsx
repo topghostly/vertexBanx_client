@@ -17,7 +17,9 @@ function TransferPage({ setAlert }) {
 
   const [userDetails, setUserDetails] = useState(() => {
     const savedUserDetails = localStorage.getItem("userDetails");
-    return savedUserDetails ? JSON.parse(savedUserDetails) : null;
+    const user = JSON.parse(savedUserDetails);
+
+    return user.userDetails;
   });
 
   const [transfer, setTransfer] = useState({
@@ -54,6 +56,10 @@ function TransferPage({ setAlert }) {
         amount: transfer.amount,
         narration: transfer.narration,
         senderAccountNumber: userDetails.AccountNumber,
+        senderName: {
+          firstName: userDetails.fullName.firstName,
+          lastName: userDetails.fullName.lastName,
+        },
       };
 
       try {

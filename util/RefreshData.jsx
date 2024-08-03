@@ -62,8 +62,6 @@ const RefreshDatabase = ({ setRefreshDetails }) => {
                 { beneficiaryLocation }
               );
 
-              console.log("The final data is", response);
-
               if (response.data.status === "SUCCESS") {
                 localStorage.setItem(
                   "userDetails",
