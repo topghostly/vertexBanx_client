@@ -5,13 +5,14 @@ function Getusername() {
   const [userDetails, setUserDetails] = useState(() => {
     const savedUserDetails = localStorage.getItem("userDetails");
     const user = JSON.parse(savedUserDetails);
-
     return user.userDetails;
   });
 
-  <Wrapper className="big">
-    {userDetails.fullName.firstName} {userDetails.fullName.lastName}
-  </Wrapper>;
+  return (
+    <Wrapper className="big">
+      {userDetails.fullName.firstName} {userDetails.fullName.lastName}
+    </Wrapper>
+  );
 }
 
 const Wrapper = styled.h3`

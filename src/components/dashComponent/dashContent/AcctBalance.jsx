@@ -10,17 +10,6 @@ function AcctBalance({ refreshDetails, setRefreshDetails, loading }) {
   const animationRef6 = useRef(null);
 
   useEffect(() => {
-    if (refreshDetails) {
-      const newSavedUserDetails = JSON.parse(
-        localStorage.getItem("userDetails")
-      );
-      setUserDetails(newSavedUserDetails);
-    }
-    console.log("the detaills as been refreshed");
-    setRefreshDetails(false);
-  }, [refreshDetails]);
-
-  useEffect(() => {
     while (updatedValue < 60) {
       const changeUpdated = setInterval(() => {
         setUpdateValue((prevValue) => (prevValue += 1));

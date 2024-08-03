@@ -7,26 +7,13 @@ import TopSection from "../dashContent/TopSection";
 import MidSection from "../dashContent/MidSection";
 import { orbit } from "ldrs";
 import gsap from "gsap";
+import RefreshDatabase from "../../../../util/RefreshData";
 
 function Homepage({ alert, setAlert }) {
   orbit.register();
   const [loading, setLoading] = useState(true);
   const [refreshDetails, setRefreshDetails] = useState(false);
-  const wrapperRef = useRef(null);
   const alertRef = useRef(null);
-
-  // useEffect(() => {
-  //   if (loading) {
-  //     gsap.to(wrapperRef.current, {
-  //       opacity: 1,
-  //     });
-  //   }
-  //   if (!loading) {
-  //     gsap.to(wrapperRef.current, {
-  //       opacity: 0,
-  //     });
-  //   }
-  // }, [loading]);
 
   // Credit alert logic
   useEffect(() => {
@@ -70,6 +57,12 @@ function Homepage({ alert, setAlert }) {
         duration: 0.2,
       }}
     >
+      {!loading && (
+        <RefreshDatabase
+          setRefreshDetails={setRefreshDetails}
+          setLoading={setLoading}
+        />
+      )}
       <VerifySession setAlert={setAlert} setLoading={setLoading} />
       <TopSection loading={loading} />
       <MidSection
@@ -110,6 +103,7 @@ const LoadingWrapper = styled.div`
   pointer-events: none;
   opacity: 1;
 `;
+
 const LoadingAnimation = styled.div`
   width: 100px;
   height: 100px;

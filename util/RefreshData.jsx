@@ -2,15 +2,16 @@ import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-const RefreshDatabase = ({ setRefreshDetails }) => {
+const RefreshDatabase = ({ setRefreshDetails, setLoading }) => {
   const navigate = useNavigate();
 
   const [userDetails, setUserDetails] = useState(() => {
     const savedUserDetails = localStorage.getItem("userDetails");
-    return savedUserDetails ? JSON.parse(savedUserDetails) : null;
+    const user = JSON.parse(savedUserDetails);
+    return user.userDetails;
   });
 
-  const userAccountNumber = userDetails?.AccountNumber;
+  const userAccountNumber = userDetails.AccountNumber;
 
   if (!userAccountNumber) {
     console.log("Can't get user account number for the update function");
@@ -63,11 +64,14 @@ const RefreshDatabase = ({ setRefreshDetails }) => {
               );
 
               if (response.data.status === "SUCCESS") {
+                setLoading(true);
                 localStorage.setItem(
                   "userDetails",
                   JSON.stringify(response.data.data)
                 );
-                setRefreshDetails(true);
+                await new Promise((resolve) => setTimeout(resolve, 2000));
+                setLoading(false);
+                // setRefreshDetails(true);
               }
             },
             (err) => {
@@ -98,14 +102,12 @@ const RefreshDatabase = ({ setRefreshDetails }) => {
     } catch (err) {
       console.error("An error occurred while fetching update", err);
     }
-  }, [userAccountNumber, newUpdateHandler]);
+  }, [userAccountNumber]);
 
   useEffect(() => {
     const updateInterval = setInterval(fetchUpdate, 2000);
     return () => clearInterval(updateInterval);
   }, [fetchUpdate]);
-
-  return null;
 };
 
 export default RefreshDatabase;
