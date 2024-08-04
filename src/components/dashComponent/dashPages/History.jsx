@@ -66,12 +66,14 @@ function History() {
               type = "credit";
               theName = `${recentTransaction.senderName.firstName} ${recentTransaction.senderName.lastName}`;
             }
+
             return (
               <Tab
                 amount={recentTransaction.amount}
                 key={recentTransaction._id}
                 type={type}
                 name={theName}
+                status={recentTransaction.transactionStatus}
               />
             );
           })}

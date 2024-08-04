@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Tab from "./Tab";
 import styled from "styled-components";
 
-function GetHistory() {
+function GetHistory({ refreshDetails, setRefreshDetails }) {
   const [userHistory, setUserHistory] = useState(() => {
     const savedUserDetails = localStorage.getItem("userDetails");
     const user = JSON.parse(savedUserDetails);
@@ -16,6 +16,19 @@ function GetHistory() {
 
     return user.userDetails;
   });
+
+  useEffect(() => {
+    if (refreshDetails) {
+      const newSavedUserDetails = JSON.parse(
+        localStorage.getItem("userDetails")
+      );
+
+      const savedDetails = newSavedUserDetails.transactionDetails;
+      setUserHistory(savedDetails);
+    }
+    console.log("the detaills as been refreshed");
+    setRefreshDetails(false);
+  }, [refreshDetails]);
 
   const recent = userHistory.slice(-3);
 
@@ -45,6 +58,7 @@ function GetHistory() {
               key={recentTransaction._id}
               type={type}
               name={theName}
+              status={recentTransaction.transactionStatus}
             />
           );
         })}

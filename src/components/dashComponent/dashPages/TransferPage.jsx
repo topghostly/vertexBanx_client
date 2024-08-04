@@ -9,8 +9,11 @@ import { orbit } from "ldrs";
 import axios from "axios";
 
 import currencyConverter from "../../../../util/balanceConverter";
+import PinPage from "../micro/PinPage";
 
 function TransferPage({ setAlert }) {
+  const buttonRef = useRef(null);
+
   const [beneficiaryName, setBeneficiaryName] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -114,8 +117,6 @@ function TransferPage({ setAlert }) {
       });
     }
   };
-
-  const buttonRef = useRef(null);
 
   const isValidPhoneNumber = (input) => {
     const regex = /^\d{10}$/;
@@ -248,7 +249,7 @@ function TransferPage({ setAlert }) {
             <label htmlFor="amount">Amount</label>
             <InputHolder>
               <input
-                type="number"
+                type="text"
                 name="amount"
                 value={transfer.amount}
                 onChange={(e) => {

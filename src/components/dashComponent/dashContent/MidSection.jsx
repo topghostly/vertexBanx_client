@@ -82,7 +82,10 @@ function MidSection({ setRefreshDetails, refreshDetails, loading, balLoad }) {
               <LoaderAnim ref={animationRef2} />
             </PlaceHolder>
           ) : (
-            <GetHistory />
+            <GetHistory
+              refreshDetails={refreshDetails}
+              setRefreshDetails={setRefreshDetails}
+            />
           )}
         </Recent>
       </RightSide>
