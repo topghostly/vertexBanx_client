@@ -68,24 +68,38 @@ function TransferPage({ setAlert }) {
           payload
         );
         console.log("The responce from the back is", verificationResponce);
+
+        if (verificationResponce.data.status === "SUCCESS") {
+          setLoading(false);
+          setTransfer({
+            beneficiaryAccountNumber: "",
+            amount: "",
+            narration: "",
+          });
+          setAlert({
+            alertState: true,
+            alertType: "Success",
+            alertDetails: "Transfer successful",
+          });
+        } else if (verificationResponce.data.status === "FAILED") {
+          setLoading(false);
+          setTransfer({
+            beneficiaryAccountNumber: "",
+            amount: "",
+            narration: "",
+          });
+          setAlert({
+            alertState: true,
+            alertType: "Failed",
+            alertDetails: "Transfer failed, try again",
+          });
+        }
       } catch (error) {
         setLoading(false);
         console.error(
           "An error occured when sending details to the backside",
           error
         );
-      } finally {
-        setLoading(false);
-        setTransfer({
-          beneficiaryAccountNumber: "",
-          amount: "",
-          narration: "",
-        });
-        setAlert({
-          alertState: true,
-          alertType: "Success",
-          alertDetails: "Transfer successful",
-        });
       }
     } catch (error) {
       setLoading(false);

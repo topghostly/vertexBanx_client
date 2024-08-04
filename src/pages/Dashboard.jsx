@@ -1,23 +1,34 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import DashNav from "../components/dashComponent/DashNav";
 
 import { motion } from "framer-motion";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import MobileBottomNav from "../components/dashComponent/MobileBottomNav";
 
 function Dashboard() {
+  const location = useLocation();
+
+  const [activeMobileTab, setActiveMobileTab] = useState("home");
+
+  useEffect(() => {
+    const urlPath = location.pathname;
+    const urlParts = urlPath.split("/");
+    const currentPage = urlParts[urlParts.length - 1];
+    setActiveMobileTab(currentPage);
+  }, []);
   return (
     <Wrapper>
       <Holder>
         <div className="content">
-          <DashNav />
+          <DashNav activeMobileTab={activeMobileTab} />
           <div className="dash-holder">
             <Outlet />
+            <div className="bottom-space"></div>
           </div>
         </div>
       </Holder>
-      <MobileBottomNav />
+      <MobileBottomNav activeMobileTab={activeMobileTab} />
     </Wrapper>
   );
 }
@@ -35,6 +46,7 @@ const Wrapper = styled(motion.div)`
 
   @media screen and (max-width: 720px) {
     padding: 0px;
+    background-color: white;
   }
 `;
 
@@ -86,6 +98,16 @@ const Holder = styled.div`
       }
       &::-webkit-scrollbar-track {
         background-color: none;
+      }
+
+      .bottom-space {
+        width: 100%;
+        display: none;
+        height: 80px;
+
+        @media screen and (max-width: 720px) {
+          display: block;
+        }
       }
     }
   }

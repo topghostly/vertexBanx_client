@@ -12,6 +12,7 @@ import RefreshDatabase from "../../../../util/RefreshData";
 function Homepage({ alert, setAlert }) {
   orbit.register();
   const [loading, setLoading] = useState(true);
+  const [balLoad, setBalLoad] = useState(true);
   const [refreshDetails, setRefreshDetails] = useState(false);
   const alertRef = useRef(null);
 
@@ -60,15 +61,20 @@ function Homepage({ alert, setAlert }) {
       {!loading && (
         <RefreshDatabase
           setRefreshDetails={setRefreshDetails}
-          setLoading={setLoading}
+          setBalLoad={setBalLoad}
         />
       )}
-      <VerifySession setAlert={setAlert} setLoading={setLoading} />
+      <VerifySession
+        setAlert={setAlert}
+        setLoading={setLoading}
+        setBalLoad={setBalLoad}
+      />
       <TopSection loading={loading} />
       <MidSection
         refreshDetails={refreshDetails}
         setRefreshDetails={setRefreshDetails}
         loading={loading}
+        balLoad={balLoad}
       />
       <CreditAlert ref={alertRef}>
         <p>Youre account has been credited</p>
@@ -114,13 +120,18 @@ const LoadingAnimation = styled.div`
 
 const CreditAlert = styled.div`
   padding: 10px 20px;
+  width: 100%;
+  max-width: 300px;
   background-color: #67cc67;
+  border: solid 2px #96d496;
   color: white;
   position: fixed;
   left: 50%;
   top: -300px;
   transform: translateX(-50%);
   border-radius: 8px;
+  display: flex;
+  justify-content: center;
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 
   P {

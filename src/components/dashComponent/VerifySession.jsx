@@ -3,7 +3,7 @@ import Cookies from "js-cookie";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-function VerifySession({ setAlert, setLoading }) {
+function VerifySession({ setAlert, setLoading, setBalLoad }) {
   const [error, setError] = useState(false);
   const [token, setToken] = useState(() => {
     const existingToken = Cookies.get("sessionToken");
@@ -51,6 +51,7 @@ function VerifySession({ setAlert, setLoading }) {
       } finally {
         await new Promise((resolve) => setTimeout(resolve, 3000));
         setLoading(false);
+        setBalLoad(false);
       }
     };
     fetchUserDetails();

@@ -21,26 +21,33 @@ function GetHistory() {
 
   return (
     <Wrapper>
-      {recent.map((recentTransaction) => {
-        let type;
-        if (
-          userDetails.AccountNumber === recentTransaction.senderAccountNumber
-        ) {
-          type = "debit";
-        } else if (
-          userDetails.AccountNumber ===
-          recentTransaction.beneficiaryAccountNumber
-        ) {
-          type = "credit";
-        }
-        return (
-          <Tab
-            amount={recentTransaction.amount}
-            key={recentTransaction._id}
-            type={type}
-          />
-        );
-      })}
+      {recent
+        .slice()
+        .reverse()
+        .map((recentTransaction) => {
+          let type;
+          let theName;
+          if (
+            userDetails.AccountNumber === recentTransaction.senderAccountNumber
+          ) {
+            type = "debit";
+            theName = `${recentTransaction.beneficiaryName.firstName} ${recentTransaction.beneficiaryName.lastName}`;
+          } else if (
+            userDetails.AccountNumber ===
+            recentTransaction.beneficiaryAccountNumber
+          ) {
+            type = "credit";
+            theName = `${recentTransaction.senderName.firstName} ${recentTransaction.senderName.lastName}`;
+          }
+          return (
+            <Tab
+              amount={recentTransaction.amount}
+              key={recentTransaction._id}
+              type={type}
+              name={theName}
+            />
+          );
+        })}
     </Wrapper>
   );
 }

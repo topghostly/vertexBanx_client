@@ -3,14 +3,14 @@ import styled from "styled-components";
 import logo from "/images/VERTEX-07.png";
 import SideNav from "./SideNav";
 
-function DashNav({}) {
+function DashNav({ activeMobileTab }) {
   return (
     <Wrapper>
       <Holder>
         <LogoHolder>
           <img src={logo} alt="vertex-logo" />
         </LogoHolder>
-        <SideNav />
+        <SideNav activeMobileTab={activeMobileTab} />
       </Holder>
     </Wrapper>
   );

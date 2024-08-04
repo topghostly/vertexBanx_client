@@ -2,13 +2,16 @@ import React from "react";
 import styled from "styled-components";
 import { Link, useNavigate } from "react-router-dom";
 
-function SideNav({ page, setPage }) {
+function SideNav({ activeMobileTab }) {
   const navigate = useNavigate();
   return (
     <Wrapper>
       <p className="header">MAIN MENU</p>
       <TopLinks>
-        <Lnks to={"/u/overview/dashboard"}>
+        <Lnks
+          to={"/u/overview/dashboard"}
+          className={activeMobileTab === "dashboard" ? "active" : null}
+        >
           <div className="svg">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -27,7 +30,10 @@ function SideNav({ page, setPage }) {
           </div>
           <div className="word">Overview</div>
         </Lnks>
-        <Lnks to={"/u/overview/transfer"}>
+        <Lnks
+          to={"/u/overview/transfer"}
+          className={activeMobileTab === "transfer" ? "active" : null}
+        >
           <div className="svg">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -71,7 +77,10 @@ function SideNav({ page, setPage }) {
       </TopLinks>
       <p className="header">SETTINGS</p>
       <TopLinks>
-        <Lnks to={"/u/overview/profile"}>
+        <Lnks
+          to={"/u/overview/profile"}
+          className={activeMobileTab === "profile" ? "active" : null}
+        >
           <div className="svg">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -152,6 +161,10 @@ const TopLinks = styled.div`
   gap: 15px;
   align-items: start;
   width: 100%;
+
+  .active {
+    background-color: #313131;
+  }
 `;
 
 const Lnks = styled(Link)`

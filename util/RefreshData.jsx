@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-const RefreshDatabase = ({ setRefreshDetails, setLoading }) => {
+const RefreshDatabase = ({ setRefreshDetails, setBalLoad }) => {
   const navigate = useNavigate();
 
   const [userDetails, setUserDetails] = useState(() => {
@@ -64,14 +64,14 @@ const RefreshDatabase = ({ setRefreshDetails, setLoading }) => {
               );
 
               if (response.data.status === "SUCCESS") {
-                setLoading(true);
+                setBalLoad(true);
                 localStorage.setItem(
                   "userDetails",
                   JSON.stringify(response.data.data)
                 );
                 await new Promise((resolve) => setTimeout(resolve, 2000));
-                setLoading(false);
-                // setRefreshDetails(true);
+                setBalLoad(false);
+                setRefreshDetails(true);
               }
             },
             (err) => {

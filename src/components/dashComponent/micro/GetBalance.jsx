@@ -15,7 +15,9 @@ function GetBalance({ refreshDetails, setRefreshDetails }) {
       const newSavedUserDetails = JSON.parse(
         localStorage.getItem("userDetails")
       );
-      setUserDetails(newSavedUserDetails);
+
+      const savedDetails = newSavedUserDetails.userDetails;
+      setUserDetails(savedDetails);
     }
     console.log("the detaills as been refreshed");
     setRefreshDetails(false);

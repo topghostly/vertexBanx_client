@@ -8,7 +8,7 @@ import gsap from "gsap";
 import { Link } from "react-router-dom";
 import GetHistory from "../micro/GetHistory";
 
-function MidSection({ setRefreshDetails, refreshDetails, loading }) {
+function MidSection({ setRefreshDetails, refreshDetails, loading, balLoad }) {
   const animationRef = useRef(null);
   const animationRef1 = useRef(null);
   const animationRef2 = useRef(null);
@@ -65,6 +65,7 @@ function MidSection({ setRefreshDetails, refreshDetails, loading }) {
             refreshDetails={refreshDetails}
             setRefreshDetails={setRefreshDetails}
             loading={loading}
+            balLoad={balLoad}
           />
           <SavingBalance />
         </div>

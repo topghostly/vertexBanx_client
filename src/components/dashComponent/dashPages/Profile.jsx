@@ -8,9 +8,9 @@ function Profile() {
   const navigate = useNavigate();
   const [userDetails, setUserDetails] = useState(() => {
     const savedUserDetails = localStorage.getItem("userDetails");
-    return savedUserDetails
-      ? JSON.parse(savedUserDetails)
-      : navigate("/auth/login");
+    const user = JSON.parse(savedUserDetails);
+
+    return user.userDetails;
   });
   return (
     <Wrapper

@@ -17,7 +17,7 @@ function Tab({ name, amount, type }) {
     <Wrapper>
       <div className="icon"></div>
       <div className="text">
-        <p>Chritiana Sangotope</p>
+        <p>{name}</p>
       </div>
       <div className="amount">
         <h2 ref={amountColor}>{currencyConverter(amount)}</h2>

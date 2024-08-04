@@ -4,10 +4,10 @@ import gsap from "gsap";
 import GetBalance from "../micro/GetBalance";
 import GetAcctNum from "../micro/GetAcctNum";
 
-function AcctBalance({ refreshDetails, setRefreshDetails, loading }) {
+function AcctBalance({ refreshDetails, setRefreshDetails, loading, balLoad }) {
   const [updatedValue, setUpdateValue] = useState(0);
-  const animationRef = useRef(null);
-  const animationRef6 = useRef(null);
+  const animationRef56 = useRef(null);
+  const animationRef64 = useRef(null);
 
   useEffect(() => {
     while (updatedValue < 60) {
@@ -22,7 +22,7 @@ function AcctBalance({ refreshDetails, setRefreshDetails, loading }) {
   useEffect(() => {
     if (loading) {
       gsap.fromTo(
-        animationRef.current,
+        animationRef56.current,
         {
           transform: "translateX(-80%)",
         },
@@ -30,13 +30,13 @@ function AcctBalance({ refreshDetails, setRefreshDetails, loading }) {
           transform: "translateX(80%)",
           duration: 1,
           repeat: -1,
-          yoyo: true,
+          yoyo: false,
           ease: "power4.in",
           delay: 0.2,
         }
       );
       gsap.fromTo(
-        animationRef6.current,
+        animationRef64.current,
         {
           transform: "translateX(-80%)",
         },
@@ -67,7 +67,7 @@ function AcctBalance({ refreshDetails, setRefreshDetails, loading }) {
           <div className="balance-holder">
             {loading ? (
               <PlaceHolder>
-                <LoaderAnim ref={animationRef} />
+                <LoaderAnim ref={animationRef56} />
               </PlaceHolder>
             ) : (
               <GetBalance
@@ -80,7 +80,7 @@ function AcctBalance({ refreshDetails, setRefreshDetails, loading }) {
           <div className="card-number">
             {loading ? (
               <PlaceHolder>
-                <LoaderAnim ref={animationRef6} />
+                <LoaderAnim ref={animationRef64} />
               </PlaceHolder>
             ) : (
               <GetAcctNum />
@@ -110,7 +110,7 @@ const PlaceHolder = styled.div`
 `;
 const LoaderAnim = styled.div`
   display: absolute;
-  transform: skewX(200);
+  transform: skewX(80);
   width: 100%;
   top: -20px;
   left: 0;

@@ -1,7 +1,30 @@
 import { motion } from "framer-motion";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
+import Tab from "../micro/Tab";
+
 function History() {
+  const navigate = useNavigate();
+  const [userHistory, setUserHistory] = useState(() => {
+    const savedUserDetails = localStorage.getItem("userDetails");
+    const user = JSON.parse(savedUserDetails);
+
+    return user.transactionDetails;
+  });
+
+  const [userDetails, setUserDetails] = useState(() => {
+    const savedUserDetails = localStorage.getItem("userDetails");
+    const user = JSON.parse(savedUserDetails);
+
+    return user.userDetails;
+  });
+
+  useEffect(() => {
+    if (!userDetails || !userHistory) {
+      navigate("/u/overview/dashboard");
+    }
+  });
   return (
     <Wrapper
       initial={{
@@ -24,87 +47,34 @@ function History() {
       </section>
       <Recent>
         <div className="head"></div>
-        <Tab>
-          <div className="icon"></div>
-          <div className="text">
-            <p>Chritiana Sangotope</p>
-          </div>
-          <div className="amount">
-            <h2>₦23,050.00</h2>
-          </div>
-        </Tab>
-        <Tab>
-          <div className="icon"></div>
-          <div className="text">
-            <p>Chritiana Sangotope</p>
-          </div>
-          <div className="amount">
-            <h2>₦23,050.00</h2>
-          </div>
-        </Tab>
-        <Tab>
-          <div className="icon"></div>
-          <div className="text">
-            <p>Chritiana Sangotope</p>
-          </div>
-          <div className="amount">
-            <h2>₦23,050.00</h2>
-          </div>
-        </Tab>
-        <Tab>
-          <div className="icon"></div>
-          <div className="text">
-            <p>Chritiana Sangotope</p>
-          </div>
-          <div className="amount">
-            <h2>₦23,050.00</h2>
-          </div>
-        </Tab>
-        <Tab>
-          <div className="icon"></div>
-          <div className="text">
-            <p>Chritiana Sangotope</p>
-          </div>
-          <div className="amount">
-            <h2>₦23,050.00</h2>
-          </div>
-        </Tab>
-        <Tab>
-          <div className="icon"></div>
-          <div className="text">
-            <p>Chritiana Sangotope</p>
-          </div>
-          <div className="amount">
-            <h2>₦23,050.00</h2>
-          </div>
-        </Tab>
-        <Tab>
-          <div className="icon"></div>
-          <div className="text">
-            <p>Chritiana Sangotope</p>
-          </div>
-          <div className="amount">
-            <h2>₦23,050.00</h2>
-          </div>
-        </Tab>
-        <Tab>
-          <div className="icon"></div>
-          <div className="text">
-            <p>Chritiana Sangotope</p>
-          </div>
-          <div className="amount">
-            <h2>₦23,050.00</h2>
-          </div>
-        </Tab>
-        <Tab>
-          <div className="icon"></div>
-          <div className="text">
-            <p>Chritiana Sangotope</p>
-          </div>
-          <div className="amount">
-            <h2>₦23,050.00</h2>
-          </div>
-        </Tab>
+        {userHistory
+          .slice()
+          .reverse()
+          .map((recentTransaction) => {
+            let type;
+            let theName;
+            if (
+              userDetails.AccountNumber ===
+              recentTransaction.senderAccountNumber
+            ) {
+              type = "debit";
+              theName = `${recentTransaction.beneficiaryName.firstName} ${recentTransaction.beneficiaryName.lastName}`;
+            } else if (
+              userDetails.AccountNumber ===
+              recentTransaction.beneficiaryAccountNumber
+            ) {
+              type = "credit";
+              theName = `${recentTransaction.senderName.firstName} ${recentTransaction.senderName.lastName}`;
+            }
+            return (
+              <Tab
+                amount={recentTransaction.amount}
+                key={recentTransaction._id}
+                type={type}
+                name={theName}
+              />
+            );
+          })}
       </Recent>
     </Wrapper>
   );
@@ -115,6 +85,7 @@ const Wrapper = styled(motion.div)`
   display: flex;
   flex-direction: column;
   gap: 30px;
+  min-height: 100vh;
 
   section.heading {
     display: flex;
@@ -155,43 +126,43 @@ const Recent = styled.div`
   }
 `;
 
-const Tab = styled.div`
-  position: relative;
-  width: 100%;
-  height: 60px;
-  border-bottom: solid 1px var(--medium-grey);
-  display: grid;
-  place-content: center;
-  grid-template-columns: 20% 55% 30%;
-  padding: 0px 10px;
-  padding-bottom: 10px;
+// const Tab = styled.div`
+//   position: relative;
+//   width: 100%;
+//   height: 60px;
+//   border-bottom: solid 1px var(--medium-grey);
+//   display: grid;
+//   place-content: center;
+//   grid-template-columns: 20% 55% 30%;
+//   padding: 0px 10px;
+//   padding-bottom: 10px;
 
-  .icon {
-    width: 45px;
-    height: 45px;
-    background-color: var(--dark-grey);
-    border-radius: 50%;
-  }
+//   .icon {
+//     width: 45px;
+//     height: 45px;
+//     background-color: var(--dark-grey);
+//     border-radius: 50%;
+//   }
 
-  .text {
-    display: grid;
-    place-content: center;
-    justify-content: flex-start;
-    p {
-      font-family: "Manrope-Bold";
-      font-size: var(--text-font);
-    }
-  }
+//   .text {
+//     display: grid;
+//     place-content: center;
+//     justify-content: flex-start;
+//     p {
+//       font-family: "Manrope-Bold";
+//       font-size: var(--text-font);
+//     }
+//   }
 
-  .amount {
-    display: grid;
-    place-content: center;
-    justify-content: flex-end;
-    h2 {
-      color: var(--theme-color);
-      font-size: var(--text-font);
-    }
-  }
-`;
+//   .amount {
+//     display: grid;
+//     place-content: center;
+//     justify-content: flex-end;
+//     h2 {
+//       color: var(--theme-color);
+//       font-size: var(--text-font);
+//     }
+//   }
+// `;
 
 export default History;
