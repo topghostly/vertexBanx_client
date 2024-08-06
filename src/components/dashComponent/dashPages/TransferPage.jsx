@@ -9,7 +9,6 @@ import { orbit } from "ldrs";
 import axios from "axios";
 
 import currencyConverter from "../../../../util/balanceConverter";
-import PinPage from "../micro/PinPage";
 
 function TransferPage({ setAlert }) {
   const buttonRef = useRef(null);
@@ -165,7 +164,30 @@ function TransferPage({ setAlert }) {
     }
   };
 
-  useEffect(() => {}, [beneficiaryName]);
+  //Get the beneficiary name
+  const getBeneficiaryName = async (accountNumber) => {
+    console.log("The account number is", accountNumber);
+    console.log("this is the beginnign of the beneficairy name logic starting");
+    try {
+      const beneficiaryName = await axios.post(
+        "http://localhost:3030/v0/api/get/beneficiary-name",
+        { beneficiaryAccountNumber: accountNumber }
+      );
+
+      if (beneficiaryName.data.status === "SUCCESS") {
+        setBeneficiaryName(beneficiaryName.data.data);
+      } else if (beneficiaryName.data.code === "INVALID_ACCOUNT_NUMBER") {
+        setBeneficiaryName("USER_NOT_FOUND");
+      }
+    } catch (error) {
+      console.error(
+        "An error occured while getting the baneficiary name",
+        error
+      );
+      setBeneficiaryName("...");
+    }
+  };
+
   return (
     <Wrapper
       initial={{
@@ -200,7 +222,6 @@ function TransferPage({ setAlert }) {
               <p className="small">{currencyConverter(userDetails.balance)}</p>
             </div>
           </InputHolder>
-
           <div className="label-holder">
             <label htmlFor="baneficiary-bank">Beneficiary Bank</label>
             <InputHolder>
@@ -224,7 +245,6 @@ function TransferPage({ setAlert }) {
               </div>
             </InputHolder>
           </div>
-
           <div className="label-holder">
             <label htmlFor="beneficiary-number">
               Beneficiary Account Number
@@ -233,23 +253,32 @@ function TransferPage({ setAlert }) {
               <input
                 type="text"
                 name="beneficiary-number"
+                autoComplete="off"
+                maxLength="10"
                 value={transfer.beneficiaryAccountNumber}
                 onChange={(e) => {
                   setTransfer({
                     ...transfer,
                     beneficiaryAccountNumber: e.target.value,
                   });
+
+                  if (e.target.value.length === 10) {
+                    console.log("Counted 10");
+                    setBeneficiaryName("...");
+                    getBeneficiaryName(e.target.value);
+                  } else if (e.target.value.length !== 10) {
+                    setBeneficiaryName("");
+                  }
                 }}
               />
             </InputHolder>
             <p className="account-name small">{beneficiaryName}</p>
           </div>
-
           <div className="label-holder">
             <label htmlFor="amount">Amount</label>
             <InputHolder>
               <input
-                type="text"
+                type="number"
                 name="amount"
                 value={transfer.amount}
                 onChange={(e) => {
@@ -261,7 +290,6 @@ function TransferPage({ setAlert }) {
               />
             </InputHolder>
           </div>
-
           <div className="label-holder">
             <label htmlFor="narration">Narration</label>
             <InputHolder>
@@ -330,6 +358,10 @@ const Holder = styled.div`
       display: flex;
       flex-direction: column;
       gap: 4px;
+
+      .account-name {
+        height: 10px;
+      }
 
       label {
         font-size: var(--text-font);
