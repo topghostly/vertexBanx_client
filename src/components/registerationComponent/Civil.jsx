@@ -87,6 +87,7 @@ function Civil({ setLightUp, setregisterationDetails, registerationDetails }) {
         type="mail"
         name="mail"
         placeholder="Mail"
+        autoComplete="off"
         value={civilInfo.mail}
         onChange={(e) => {
           setCivilInfo({
@@ -99,6 +100,7 @@ function Civil({ setLightUp, setregisterationDetails, registerationDetails }) {
       <input
         type="text"
         name="phoneNumber"
+        autoComplete="off"
         placeholder="Phone number"
         value={civilInfo.phoneNumber}
         onChange={(e) => {
@@ -112,6 +114,7 @@ function Civil({ setLightUp, setregisterationDetails, registerationDetails }) {
       <input
         type="text"
         name="residentialAddress"
+        autoComplete="off"
         placeholder="Residential address"
         value={civilInfo.residentialAddress}
         onChange={(e) => {
@@ -142,6 +145,7 @@ function Civil({ setLightUp, setregisterationDetails, registerationDetails }) {
       <input
         type="text"
         name="bvn"
+        autoComplete="off"
         placeholder="BVN"
         value={civilInfo.bvn}
         onChange={(e) => {
@@ -155,6 +159,7 @@ function Civil({ setLightUp, setregisterationDetails, registerationDetails }) {
       <input
         type="text"
         name="nin"
+        autoComplete="off"
         placeholder="National Identification Number"
         value={civilInfo.nin}
         onChange={(e) => {

@@ -57,6 +57,7 @@ function Personal({
         name="firstname"
         placeholder="Firstname"
         value={personalInfo.fullname.firstname}
+        autoComplete="off"
         onChange={(e) => {
           setPersonalInfo({
             ...personalInfo,
@@ -70,6 +71,7 @@ function Personal({
         name="lastname"
         placeholder="Lastname"
         value={personalInfo.fullname.lastname}
+        autoComplete="off"
         onChange={(e) => {
           setPersonalInfo({
             ...personalInfo,

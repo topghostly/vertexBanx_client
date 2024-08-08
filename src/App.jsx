@@ -59,38 +59,47 @@ function App() {
 
   // Handle registration logic
   const handleAsyncRegostration = async () => {
+    console.log("The registration details:", registerationDetails);
     try {
       const responce = await axios.post(
         "http://localhost:3030/v0/api/auth/register",
         registerationDetails
       );
-      if (responce.data.status == "SUCCESS") {
+      if (responce.data.status === "SUCCESS") {
         setAlert({
           alertState: true,
           alertType: "Success",
           alertDetails: "login to account",
         });
+        setHandleRegistration(false);
         return setTimeout(() => {
           handleNavigation();
         }, 1000);
       } else {
-        return console.log(responce);
+        setAlert({
+          alertState: true,
+          alertType: "Failed",
+          alertDetails: "An error occured while making your account, try again",
+        });
+        setHandleRegistration(false);
+        navigate("/auth/create-acct/personal-details");
       }
     } catch (error) {
       setAlert({
         alertState: true,
         alertType: "Failed",
-        alertDetails: "An error occured, try again",
+        alertDetails: "An error occured while making your account, try again",
       });
+      setHandleRegistration(false);
       navigate("/auth/create-acct/personal-details");
-      return console.log("Error creating user:", error);
+      return console.error("Error creating user:", error);
     }
   };
 
   useEffect(() => {
     if (handleRegistration) {
+      console.log("The handle registration has started");
       handleAsyncRegostration();
-      setHandleRegistration(false);
     }
   });
 
@@ -116,6 +125,7 @@ function App() {
       });
     }
   });
+
   return (
     <div className="main-content">
       <AnimatePresence mode="wait">

@@ -34,6 +34,10 @@ function GetHistory({ refreshDetails, setRefreshDetails }) {
 
   return (
     <Wrapper>
+      {recent.length <= 0 ? (
+        <p className="no-transaction">No recent transaction</p>
+      ) : null}
+
       {recent
         .slice()
         .reverse()
@@ -71,6 +75,13 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 5px;
+
+  p.no-transaction {
+    font-size: 13px;
+    text-align: center;
+    margin-top: 20px;
+    font-family: "Manrope-Bold";
+  }
 `;
 
 export default GetHistory;

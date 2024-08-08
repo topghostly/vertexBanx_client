@@ -1,9 +1,6 @@
-import axios from "axios";
 import { motion } from "framer-motion";
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
-import Alert from "../dashComponent/Alert";
 
 function Password({
   setLightUp,
@@ -15,7 +12,6 @@ function Password({
   const [passwordInfo, setPasswordInfo] = useState({
     password: "",
     transactionPin: "",
-    initialDeposit: "",
   });
 
   const verifyDetails = () => {
@@ -47,33 +43,6 @@ function Password({
     });
 
     setHandleRegistration(true);
-
-    // const userInformation = verifyDetails();
-
-    // console.log("The user information sent:", userInformation);
-
-    // try {
-    //   const responce = await axios.post(
-    //     "http://localhost:3030/v0/api/auth/register",
-    //     userInformation
-    //   );
-
-    //   if (responce.status === "SUCCESS") {
-    //     setAlert({
-    //       alertState: true,
-    //       alertType: "Success",
-    //       alertDetails: "Registeration completed, redirecting to login page",
-    //     });
-    //     navigate("/auth/login");
-    //   }
-    // } catch (error) {
-    //   setAlert({
-    //     alertState: true,
-    //     alertType: "Failed",
-    //     alertDetails: "An error occured, try again",
-    //   });
-    //   console.log("Error creating user:", error);
-    // }
   };
 
   useEffect(() => {
@@ -123,7 +92,7 @@ function Password({
         }}
       />
 
-      <input
+      {/* <input
         type="number"
         name="initialDeposit"
         placeholder="Initial Deposite"
@@ -134,7 +103,7 @@ function Password({
             initialDeposit: e.target.value,
           });
         }}
-      />
+      /> */}
 
       <button onClick={(e) => handleSubmit(e)}>Submit</button>
     </Wrapper>

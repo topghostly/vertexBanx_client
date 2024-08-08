@@ -38,16 +38,16 @@ function VerifySession({ setAlert, setLoading, setBalLoad }) {
             rawToken: String(token),
           }
         );
-        console.log(response);
+        // console.log(response);
         if (response.data.status == "FAILED") {
           console.log("this error got triggered");
           Cookies.remove("sessionToken");
           return setError(true);
         }
-        console.log("The response is", response);
+        // console.log("The response is", response);
         localStorage.setItem("userDetails", JSON.stringify(response.data.data));
       } catch (err) {
-        console.error("An error occured", err);
+        // console.error("An error occured", err);
       } finally {
         await new Promise((resolve) => setTimeout(resolve, 3000));
         setLoading(false);

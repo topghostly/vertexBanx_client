@@ -34,7 +34,7 @@ const RefreshDatabase = ({ setRefreshDetails, setBalLoad }) => {
         country: response.data.address.country,
         countryCode: response.data.address.country_code,
       };
-      console.log("Now the address is", detailLocation);
+      // console.log("Now the address is", detailLocation);
       return detailLocation;
     } catch (error) {
       console.error(
@@ -51,12 +51,12 @@ const RefreshDatabase = ({ setRefreshDetails, setBalLoad }) => {
           navigator.geolocation.getCurrentPosition(
             async (position) => {
               const { latitude, longitude } = position.coords;
-              console.log("The coordinates are", latitude, longitude);
+              // console.log("The coordinates are", latitude, longitude);
               let beneficiaryLocation = await getActualLocation(
                 latitude,
                 longitude
               );
-              console.log("The beneficiaryLocation is", beneficiaryLocation);
+              // console.log("The beneficiaryLocation is", beneficiaryLocation);
 
               const response = await axios.post(
                 `http://localhost:3030/v0/api/verify/delete/${verificationID}`,
@@ -95,9 +95,9 @@ const RefreshDatabase = ({ setRefreshDetails, setBalLoad }) => {
       );
       if (response.data.code === "FOUND_NEW_TRANSACTION_UPDATE") {
         await newUpdateHandler(response.data.date._id);
-        console.log("New update found");
+        // console.log("New update found");
       } else if (response.data.code === "NO_NEW_UPDATE") {
-        console.log("No update found");
+        // console.log("No update found");
       }
     } catch (err) {
       console.error("An error occurred while fetching update", err);

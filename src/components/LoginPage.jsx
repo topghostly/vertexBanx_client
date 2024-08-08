@@ -138,6 +138,7 @@ function LoginPage({ setAlert, setSliderPosition }) {
           <input
             type="text"
             name="usermailOrAcct"
+            autoComplete="off"
             placeholder="Email or account number"
             value={loginDetails.usermailOrAcct}
             onChange={(e) => {

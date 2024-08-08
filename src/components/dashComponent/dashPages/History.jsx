@@ -45,8 +45,12 @@ function History() {
         <h3>Transaction Statement</h3>
         <p className="small">Browse all transactions you've made</p>
       </section>
+      {userHistory.length <= 0 ? (
+        <p className="no-transaction">No recent transaction</p>
+      ) : null}
       <Recent>
         <div className="head"></div>
+
         {userHistory
           .slice()
           .reverse()
@@ -88,6 +92,13 @@ const Wrapper = styled(motion.div)`
   flex-direction: column;
   gap: 30px;
   min-height: 100vh;
+
+  p.no-transaction {
+    font-size: 13px;
+    text-align: center;
+    margin-top: 20px;
+    font-family: "Manrope-Bold";
+  }
 
   section.heading {
     display: flex;
