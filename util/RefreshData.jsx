@@ -100,7 +100,7 @@ const RefreshDatabase = ({ setRefreshDetails, setBalLoad }) => {
         // console.log("No update found");
       }
     } catch (err) {
-      console.error("An error occurred while fetching update", err);
+      // console.error("An error occurred while fetching update", err);
     }
   }, [userAccountNumber]);
 

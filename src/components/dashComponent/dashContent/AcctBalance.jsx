@@ -66,14 +66,14 @@ function AcctBalance({ refreshDetails, setRefreshDetails, loading, balLoad }) {
   };
 
   useEffect(() => {
-    if (showBalance) {
+    if (!showBalance) {
       gsap.to(privacyGuardRef.current, {
         opacity: 1,
         duration: 0.3,
       });
     }
 
-    if (!showBalance) {
+    if (showBalance) {
       gsap.to(privacyGuardRef.current, {
         opacity: 0,
         duration: 0.3,

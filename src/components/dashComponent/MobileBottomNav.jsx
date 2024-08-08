@@ -104,7 +104,7 @@ const Wrapper = styled.div`
   height: 62px;
   background-color: black;
   margin: 0px auto;
-  z-index: 110;
+  z-index: 9;
   border-radius: 100px;
   grid-template-columns: 15% 2% 83%;
   padding: 0px 25px;
