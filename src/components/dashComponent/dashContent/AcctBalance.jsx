@@ -231,11 +231,16 @@ const Holder = styled.div`
       }
 
       .privacy-guard {
-        width: 180px;
-        height: 33px;
+        width: 220px;
+        height: 38px;
         position: absolute;
         z-index: 2;
-        backdrop-filter: blur(8px);
+        backdrop-filter: blur(7px);
+
+        @media screen and (max-width: 540px) {
+          width: 185px;
+          height: 34px;
+        }
       }
     }
     .card-number {

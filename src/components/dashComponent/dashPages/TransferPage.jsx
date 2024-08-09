@@ -7,6 +7,7 @@ import fidelity from "/images/fidelity.jpg";
 import vertex from "/images/vertex.jpg";
 import { orbit } from "ldrs";
 import axios from "axios";
+import gsap from "gsap";
 
 import currencyConverter from "../../../../util/balanceConverter";
 
@@ -16,6 +17,7 @@ function TransferPage({ setAlert }) {
   const [beneficiaryName, setBeneficiaryName] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [allowTrasfer, setAllowTransfer] = useState(false);
 
   const [userDetails, setUserDetails] = useState(() => {
     const savedUserDetails = localStorage.getItem("userDetails");
@@ -175,6 +177,7 @@ function TransferPage({ setAlert }) {
       );
 
       if (beneficiaryName.data.status === "SUCCESS") {
+        setAllowTransfer(true);
         setBeneficiaryName(beneficiaryName.data.data);
       } else if (beneficiaryName.data.code === "INVALID_ACCOUNT_NUMBER") {
         setBeneficiaryName("USER_NOT_FOUND");
@@ -267,6 +270,7 @@ function TransferPage({ setAlert }) {
                     setBeneficiaryName("...");
                     getBeneficiaryName(e.target.value);
                   } else if (e.target.value.length !== 10) {
+                    setAllowTransfer(false);
                     setBeneficiaryName("");
                   }
                 }}
@@ -314,7 +318,7 @@ function TransferPage({ setAlert }) {
             <l-orbit size="31" speed="1.5" color="black"></l-orbit>
           ) : (
             <button ref={buttonRef} onClick={handleSubmit}>
-              <p>Transfer fund</p>
+              {allowTrasfer ? <p>Transfer fund</p> : <p>Please wait...</p>}
             </button>
           )}
         </div>
@@ -387,7 +391,6 @@ const Holder = styled.div`
 
   button {
     background-color: black;
-
     height: 42px;
     width: 130px;
     border-radius: 6px;
@@ -395,7 +398,6 @@ const Holder = styled.div`
     outline: none;
     font-family: "Manrope-Bold";
     transition: all 0.3s ease-in-out;
-
     p {
       color: white;
       font-size: 13px;
