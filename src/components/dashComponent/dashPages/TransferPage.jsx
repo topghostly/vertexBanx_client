@@ -317,7 +317,14 @@ function TransferPage({ setAlert }) {
           {loading ? (
             <l-orbit size="31" speed="1.5" color="black"></l-orbit>
           ) : (
-            <button ref={buttonRef} onClick={handleSubmit}>
+            <button
+              ref={buttonRef}
+              onClick={() => {
+                if (allowTrasfer) {
+                  handleSubmit();
+                }
+              }}
+            >
               {allowTrasfer ? <p>Transfer fund</p> : <p>Please wait...</p>}
             </button>
           )}
