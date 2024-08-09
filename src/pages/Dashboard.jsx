@@ -78,15 +78,17 @@ const Holder = styled.div`
       overflow-y: scroll;
       color: black;
 
-      @media screen and (max-width: 400px) {
-        padding: 10px;
-        padding-top: 20px;
-      }
-
       @media screen and (max-width: 720px) {
         border-radius: 0px;
         width: 100%;
+        height: auto;
+        max-height: auto;
         overflow-y: auto;
+      }
+
+      @media screen and (max-width: 400px) {
+        padding: 10px;
+        padding-top: 20px;
       }
 
       &::-webkit-scrollbar {

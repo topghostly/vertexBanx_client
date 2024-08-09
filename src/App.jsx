@@ -130,7 +130,7 @@ function App() {
     <div className="main-content">
       <AnimatePresence mode="wait">
         <Routes location={location} key={location.pathname}>
-          <Route path="/" element={<Navigate to="/u/overview/dashboard" />} />
+          <Route path="/" element={<Navigate to="/auth/login" />} />
           <Route
             path="/auth"
             element={

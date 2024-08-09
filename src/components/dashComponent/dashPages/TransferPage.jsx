@@ -347,6 +347,7 @@ const Holder = styled.div`
   flex-direction: column;
   gap: 30px;
   margin: 0px auto;
+  padding: 10px;
 
   section.heading {
     display: flex;

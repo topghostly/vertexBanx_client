@@ -92,6 +92,7 @@ const Wrapper = styled(motion.div)`
   flex-direction: column;
   gap: 30px;
   min-height: 100vh;
+  padding: 10px;
 
   p.no-transaction {
     font-size: 13px;

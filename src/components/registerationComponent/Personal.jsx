@@ -57,6 +57,7 @@ function Personal({
         name="firstname"
         placeholder="Firstname"
         value={personalInfo.fullname.firstname}
+        style="text-transform: capitalize;"
         autoComplete="off"
         onChange={(e) => {
           setPersonalInfo({
@@ -71,6 +72,7 @@ function Personal({
         name="lastname"
         placeholder="Lastname"
         value={personalInfo.fullname.lastname}
+        style="text-transform: capitalize;"
         autoComplete="off"
         onChange={(e) => {
           setPersonalInfo({

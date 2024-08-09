@@ -88,6 +88,7 @@ function Civil({ setLightUp, setregisterationDetails, registerationDetails }) {
         name="mail"
         placeholder="Mail"
         autoComplete="off"
+        style="text-transform: lowercase;"
         value={civilInfo.mail}
         onChange={(e) => {
           setCivilInfo({

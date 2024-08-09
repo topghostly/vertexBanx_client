@@ -98,7 +98,7 @@ function MobileBottomNav({ activeMobileTab }) {
 
 const Wrapper = styled.div`
   position: fixed;
-  bottom: 15px;
+  bottom: 20px;
   width: 90%;
   max-width: 400px;
   height: 62px;
