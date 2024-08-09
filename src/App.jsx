@@ -6,7 +6,7 @@ import Dashboard from "./pages/Dashboard";
 import gsap from "gsap";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { Routes, Route, useLocation } from "react-router-dom";
+import { Routes, Route, useLocation, Navigate } from "react-router-dom";
 
 // Pages and components import
 import Homepage from "./components/dashComponent/dashPages/Homepage";
@@ -130,6 +130,7 @@ function App() {
     <div className="main-content">
       <AnimatePresence mode="wait">
         <Routes location={location} key={location.pathname}>
+          <Route path="/" element={<Navigate to="/u/overview/dashboard" />} />
           <Route
             path="/auth"
             element={
