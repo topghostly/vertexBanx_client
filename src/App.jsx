@@ -62,7 +62,7 @@ function App() {
     console.log("The registration details:", registerationDetails);
     try {
       const responce = await axios.post(
-        "http://localhost:3030/v0/api/auth/register",
+        "https://vertex-server-9jyo.onrender.com/v0/api/auth/register",
         registerationDetails
       );
       if (responce.data.status === "SUCCESS") {

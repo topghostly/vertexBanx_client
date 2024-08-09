@@ -326,10 +326,10 @@ const LoaderAnim = styled.div`
 const Holder = styled.div`
   position: relative;
   width: 100%;
-  height: 100%;
+  height: fit-content;
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
 
   .left {
     position: relative;
@@ -360,7 +360,7 @@ const Holder = styled.div`
     display: flex;
     align-items: flex-start;
 
-    .hamburger-holder {
+    /* .hamburger-holder {
       width: fit-content;
       height: fit-content;
       color: black;
@@ -371,7 +371,7 @@ const Holder = styled.div`
       @media screen and (max-width: 540px) {
         display: block;
       }
-    }
+    } */
 
     .logout-mobile {
       height: 50px;

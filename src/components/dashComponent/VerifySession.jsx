@@ -33,7 +33,7 @@ function VerifySession({ setAlert, setLoading, setBalLoad }) {
     const fetchUserDetails = async () => {
       try {
         const response = await axios.post(
-          "http://localhost:3030/v0/api/get/user-info",
+          "https://vertex-server-9jyo.onrender.com/v0/api/get/user-info",
           {
             rawToken: String(token),
           }

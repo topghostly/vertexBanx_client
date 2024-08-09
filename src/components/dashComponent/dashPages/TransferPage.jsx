@@ -68,7 +68,7 @@ function TransferPage({ setAlert }) {
 
       try {
         const verificationResponce = await axios.post(
-          "http://localhost:3030/v0/api/verify/",
+          "https://vertex-server-9jyo.onrender.com/v0/api/verify/",
           payload
         );
         console.log("The responce from the back is", verificationResponce);
@@ -80,6 +80,7 @@ function TransferPage({ setAlert }) {
             amount: "",
             narration: "",
           });
+          setBeneficiaryName("");
           setAlert({
             alertState: true,
             alertType: "Success",
@@ -92,6 +93,7 @@ function TransferPage({ setAlert }) {
             amount: "",
             narration: "",
           });
+          setBeneficiaryName("");
           setAlert({
             alertState: true,
             alertType: "Failed",
@@ -172,7 +174,7 @@ function TransferPage({ setAlert }) {
     console.log("this is the beginnign of the beneficairy name logic starting");
     try {
       const beneficiaryName = await axios.post(
-        "http://localhost:3030/v0/api/get/beneficiary-name",
+        "https://vertex-server-9jyo.onrender.com/v0/api/get/beneficiary-name",
         { beneficiaryAccountNumber: accountNumber }
       );
 

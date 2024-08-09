@@ -231,14 +231,14 @@ const Holder = styled.div`
       }
 
       .privacy-guard {
-        width: 220px;
+        width: 265px;
         height: 38px;
         position: absolute;
         z-index: 2;
         backdrop-filter: blur(7px);
 
         @media screen and (max-width: 540px) {
-          width: 185px;
+          width: 190px;
           height: 34px;
         }
       }
