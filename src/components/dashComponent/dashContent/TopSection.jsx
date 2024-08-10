@@ -294,6 +294,10 @@ const Wrapper = styled.section`
   position: relative;
   max-width: 100vw;
 
+  @media screen and (max-width: 540px) {
+    margin-bottom: 20px;
+  }
+
   .light-grey {
     color: var(--medium-grey);
   }

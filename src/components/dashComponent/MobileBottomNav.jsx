@@ -98,7 +98,7 @@ function MobileBottomNav({ activeMobileTab }) {
 
 const Wrapper = styled.div`
   position: fixed;
-  bottom: 20px;
+  bottom: 5svh;
   width: 90%;
   max-width: 400px;
   height: 62px;
@@ -176,4 +176,5 @@ const Lnks = styled(Link)`
     }
   }
 `;
+
 export default MobileBottomNav;

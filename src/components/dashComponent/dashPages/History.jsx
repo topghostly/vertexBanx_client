@@ -6,6 +6,7 @@ import Tab from "../micro/Tab";
 
 function History() {
   const navigate = useNavigate();
+
   const [userHistory, setUserHistory] = useState(() => {
     const savedUserDetails = localStorage.getItem("userDetails");
     const user = JSON.parse(savedUserDetails);

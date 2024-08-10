@@ -62,31 +62,33 @@ function Homepage({ alert, setAlert }) {
         setOpenSideNav(false);
       }}
     >
-      {!loading && (
-        <RefreshDatabase
-          setRefreshDetails={setRefreshDetails}
+      <Holder>
+        {!loading && (
+          <RefreshDatabase
+            setRefreshDetails={setRefreshDetails}
+            setBalLoad={setBalLoad}
+          />
+        )}
+        <VerifySession
+          setAlert={setAlert}
+          setLoading={setLoading}
           setBalLoad={setBalLoad}
         />
-      )}
-      <VerifySession
-        setAlert={setAlert}
-        setLoading={setLoading}
-        setBalLoad={setBalLoad}
-      />
-      <TopSection
-        loading={loading}
-        openSideNav={openSideNav}
-        setOpenSideNav={setOpenSideNav}
-      />
-      <MidSection
-        refreshDetails={refreshDetails}
-        setRefreshDetails={setRefreshDetails}
-        loading={loading}
-        balLoad={balLoad}
-      />
-      <CreditAlert ref={alertRef}>
-        <p>Youre account has been credited</p>
-      </CreditAlert>
+        <TopSection
+          loading={loading}
+          openSideNav={openSideNav}
+          setOpenSideNav={setOpenSideNav}
+        />
+        <MidSection
+          refreshDetails={refreshDetails}
+          setRefreshDetails={setRefreshDetails}
+          loading={loading}
+          balLoad={balLoad}
+        />
+        <CreditAlert ref={alertRef}>
+          <p>Youre account has been credited</p>
+        </CreditAlert>
+      </Holder>
     </Wrapper>
   );
 }
@@ -95,27 +97,34 @@ const Wrapper = styled(motion.section)`
   position: relative;
   width: 100%;
   height: 100%;
-  display: grid;
-  grid-template-rows: 43px 1fr;
-  gap: 40px;
+
+  &::-webkit-scrollbar {
+    width: 5px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: #2929298f;
+    border-radius: 30px;
+  }
+  &::-webkit-scrollbar-track {
+    background-color: none;
+  }
 
   @media screen and (max-width: 540px) {
     grid-template-rows: 115px 1fr;
   }
 `;
 
-const LoadingWrapper = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: #ffffff;
+const Holder = styled.div`
+  position: relative;
   display: grid;
-  place-content: center;
-  z-index: 9000;
-  pointer-events: none;
-  opacity: 1;
+  grid-template-rows: 43px 1fr;
+  gap: 40px;
+  padding: 10px;
+  width: auto;
+
+  @media screen and (max-width: 540px) {
+    grid-template-rows: 110px 1fr;
+  }
 `;
 
 const LoadingAnimation = styled.div`

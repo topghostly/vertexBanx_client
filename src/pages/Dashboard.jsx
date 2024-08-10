@@ -24,8 +24,11 @@ function Dashboard() {
           <DashNav activeMobileTab={activeMobileTab} />
           <div className="dash-holder">
             <Outlet />
-            <div className="bottom-space"></div>
           </div>
+        </div>
+        <div className="content-mobile">
+          <Outlet />
+          <div className="bottom-space"></div>
         </div>
       </Holder>
       <MobileBottomNav activeMobileTab={activeMobileTab} />
@@ -43,6 +46,17 @@ const Wrapper = styled(motion.div)`
   justify-content: center;
   align-items: center;
   padding: 10px;
+
+  &::-webkit-scrollbar {
+    width: 5px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: #2929298f;
+    border-radius: 30px;
+  }
+  &::-webkit-scrollbar-track {
+    background-color: none;
+  }
 
   @media screen and (max-width: 720px) {
     padding: 0px;
@@ -63,9 +77,19 @@ const Holder = styled.div`
     height: 100%;
     display: grid;
     grid-template-columns: 150px 1fr;
+    &::-webkit-scrollbar {
+      width: 5px;
+    }
+    &::-webkit-scrollbar-thumb {
+      background-color: #2929298f;
+      border-radius: 30px;
+    }
+    &::-webkit-scrollbar-track {
+      background-color: none;
+    }
 
     @media screen and (max-width: 720px) {
-      display: block;
+      display: none;
     }
 
     .dash-holder {
@@ -90,26 +114,38 @@ const Holder = styled.div`
         padding: 10px;
         padding-top: 20px;
       }
+    }
+  }
 
-      &::-webkit-scrollbar {
-        width: 5px;
-      }
-      &::-webkit-scrollbar-thumb {
-        background-color: #2929298f;
-        border-radius: 30px;
-      }
-      &::-webkit-scrollbar-track {
-        background-color: none;
-      }
+  // Mobile content
+  .content-mobile {
+    position: relative;
+    width: 100vw;
+    display: none;
+    color: black;
 
-      .bottom-space {
-        width: 100%;
-        display: none;
-        height: 80px;
+    &::-webkit-scrollbar {
+      width: 5px;
+    }
+    &::-webkit-scrollbar-thumb {
+      background-color: #2929298f;
+      border-radius: 30px;
+    }
+    &::-webkit-scrollbar-track {
+      background-color: none;
+    }
 
-        @media screen and (max-width: 720px) {
-          display: block;
-        }
+    @media screen and (max-width: 720px) {
+      display: block;
+    }
+
+    .bottom-space {
+      width: 100%;
+      display: none;
+      height: 80px;
+
+      @media screen and (max-width: 720px) {
+        display: block;
       }
     }
   }

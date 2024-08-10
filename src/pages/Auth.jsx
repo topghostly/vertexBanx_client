@@ -35,6 +35,10 @@ const Wrapper = styled(motion.section)`
   background-color: black;
   display: grid;
   grid-template-columns: 350px 1fr;
+
+  @media screen and (max-width: 540px) {
+    display: block;
+  }
 `;
 
 const SectionWrapper = styled.div`
@@ -85,6 +89,10 @@ const ImageWrapper = styled.div`
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
+
+  @media screen and (max-width: 540px) {
+    display: none;
+  }
 `;
 
 export default Login;
