@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 
 import profilePic from "/images/accountPic.png";
+import Footer from "../../Footer";
 
 function Profile() {
   const navigate = useNavigate();
@@ -93,6 +94,7 @@ function Profile() {
             <p>Address</p>
           </Section>
         </Field>
+        <Footer />
       </Holder>
     </Wrapper>
   );
@@ -104,7 +106,7 @@ const Wrapper = styled(motion.div)`
 
 const Holder = styled.div`
   position: relative;
-  height: 100%;
+  /* height: 100%; */
   max-width: 400px;
   display: flex;
   flex-direction: column;

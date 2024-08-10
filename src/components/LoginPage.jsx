@@ -38,10 +38,10 @@ function LoginPage({ setAlert, setSliderPosition }) {
     }
   }, [loading]);
 
-  const validateAccountNumber = (number) => {
-    const numberPattern = /^\d{10}$/;
-    return numberPattern.test(number);
-  };
+  // const validateAccountNumber = (number) => {
+  //   const numberPattern = /^\d{10}$/;
+  //   return numberPattern.test(number);
+  // };
 
   const validateEmail = (email) => {
     const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -61,8 +61,8 @@ function LoginPage({ setAlert, setSliderPosition }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (
-      !validateEmail(loginDetails.usermailOrAcct) &&
-      !validateAccountNumber(loginDetails.usermailOrAcct)
+      !validateEmail(loginDetails.usermailOrAcct)
+      // !validateAccountNumber(loginDetails.usermailOrAcct)
     ) {
       setError("invalid parameter");
       return setLoginDetails({ ...loginDetails, usermailOrAcct: "" });
@@ -99,6 +99,11 @@ function LoginPage({ setAlert, setSliderPosition }) {
       }
     } catch (error) {
       setloading(false);
+      setAlert({
+        alertState: true,
+        alertType: "Failed",
+        alertDetails: "An unexpected error occured, try again",
+      });
       setLoginDetails({
         usermailOrAcct: "",
         password: "",

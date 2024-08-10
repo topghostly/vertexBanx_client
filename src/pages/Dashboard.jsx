@@ -30,7 +30,6 @@ function Dashboard() {
         </div>
         <div className="content-mobile">
           <Outlet />
-          {/* <div className="bottom-space"></div> */}
         </div>
       </Holder>
       {/* <MobileBottomNav activeMobileTab={activeMobileTab} /> */}

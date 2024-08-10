@@ -10,6 +10,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 import currencyConverter from "../../../../util/balanceConverter";
+import Footer from "../../Footer";
 
 function TransferPage({ setAlert }) {
   const navigate = useNavigate();
@@ -335,6 +336,7 @@ function TransferPage({ setAlert }) {
             </button>
           )}
         </div>
+        <Footer />
       </Holder>
     </Wrapper>
   );
@@ -345,7 +347,7 @@ const Wrapper = styled(motion.section)`
 `;
 const Holder = styled.div`
   position: relative;
-  height: 100%;
+  /* height: 100%; */
   max-width: 400px;
   display: flex;
   flex-direction: column;

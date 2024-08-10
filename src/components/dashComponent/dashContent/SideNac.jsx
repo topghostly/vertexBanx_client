@@ -202,6 +202,7 @@ const TopLinks = styled.div`
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
   border-radius: 10px 0px 0px 10px;
   position: relative;
+  transform: translateX(100%);
   display: flex;
   flex-direction: column;
   gap: 15px;

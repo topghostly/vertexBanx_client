@@ -21,6 +21,13 @@ function Admin() {
               <img src={logo} alt="admin-logo" />
             </div>
           </nav>
+
+          <ViewPort>
+            <form action="POST">
+              <input type="text" placeholder="Transaction ID" />
+              <button type="submit">Get details</button>
+            </form>
+          </ViewPort>
         </MainPage>
       </Holder>
     </Wrapper>
@@ -116,6 +123,30 @@ const MainPage = styled.section`
         width: 100%;
         position: relative;
       }
+    }
+  }
+`;
+
+const ViewPort = styled.div`
+  position: relative;
+  width: 400px;
+  background-color: red;
+  margin: 0px auto;
+  padding: 20px;
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+
+    input {
+      width: 90%;
+      height: 40px;
+      outline: none;
+      border-radius: 5px;
+      border: solid 2px var(--medium-grey);
+      background-color: var(--light-grey);
     }
   }
 `;

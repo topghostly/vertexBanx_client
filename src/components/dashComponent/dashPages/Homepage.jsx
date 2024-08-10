@@ -8,6 +8,7 @@ import MidSection from "../dashContent/MidSection";
 import { orbit } from "ldrs";
 import gsap from "gsap";
 import RefreshDatabase from "../../../../util/RefreshData";
+import Footer from "../../Footer";
 
 function Homepage({ alert, setAlert }) {
   orbit.register();
@@ -80,6 +81,7 @@ function Homepage({ alert, setAlert }) {
         <CreditAlert ref={alertRef}>
           <p>Youre account has been credited</p>
         </CreditAlert>
+        <Footer />
       </Holder>
     </Wrapper>
   );
@@ -88,7 +90,7 @@ function Homepage({ alert, setAlert }) {
 const Wrapper = styled(motion.section)`
   position: relative;
   width: 100%;
-  height: 100%;
+  /* height: 100%; */
 
   &::-webkit-scrollbar {
     width: 5px;
