@@ -13,7 +13,6 @@ function Homepage({ alert, setAlert }) {
   orbit.register();
   const [loading, setLoading] = useState(true);
   const [balLoad, setBalLoad] = useState(true);
-  const [openSideNav, setOpenSideNav] = useState(true);
   const [refreshDetails, setRefreshDetails] = useState(false);
   const alertRef = useRef(null);
 
@@ -58,9 +57,6 @@ function Homepage({ alert, setAlert }) {
         delay: 0.2,
         duration: 0.2,
       }}
-      onClick={() => {
-        setOpenSideNav(false);
-      }}
     >
       <Holder>
         {!loading && (
@@ -74,11 +70,7 @@ function Homepage({ alert, setAlert }) {
           setLoading={setLoading}
           setBalLoad={setBalLoad}
         />
-        <TopSection
-          loading={loading}
-          openSideNav={openSideNav}
-          setOpenSideNav={setOpenSideNav}
-        />
+        <TopSection loading={loading} />
         <MidSection
           refreshDetails={refreshDetails}
           setRefreshDetails={setRefreshDetails}

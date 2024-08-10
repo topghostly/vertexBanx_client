@@ -7,11 +7,12 @@ import fidelity from "/images/fidelity.jpg";
 import vertex from "/images/vertex.jpg";
 import { orbit } from "ldrs";
 import axios from "axios";
-import gsap from "gsap";
+import { useNavigate } from "react-router-dom";
 
 import currencyConverter from "../../../../util/balanceConverter";
 
 function TransferPage({ setAlert }) {
+  const navigate = useNavigate();
   const buttonRef = useRef(null);
 
   const [beneficiaryName, setBeneficiaryName] = useState("");
@@ -23,6 +24,9 @@ function TransferPage({ setAlert }) {
     const savedUserDetails = localStorage.getItem("userDetails");
     const user = JSON.parse(savedUserDetails);
 
+    if (!user.userDetails) {
+      navigate("/u/overview/dashboard");
+    }
     return user.userDetails;
   });
 

@@ -1,28 +1,59 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import gsap from "gsap";
 import Cookies from "js-cookie";
 
-function SideNav({ openSideNav, activeMobileTab }) {
+function SideNav({ activeMobileTab }) {
+  const [openSideNav, setOpenSideNav] = useState(false);
   const wrapperRef = useRef(null);
   useEffect(() => {
     if (!openSideNav) {
       gsap.to(wrapperRef.current, {
         x: "100%",
+        ease: "power3.in",
+        display: "none",
       });
     }
     if (openSideNav) {
       gsap.to(wrapperRef.current, {
         x: "0%",
+        ease: "power3.out",
+        display: "flex",
       });
     }
-
-    console.log("The display is", openSideNav);
   }, [openSideNav]);
   return (
-    <Wrapper ref={wrapperRef}>
-      <TopLinks>
+    <Wrapper>
+      <div
+        className="hamburger-holder"
+        onClick={() => {
+          if (openSideNav) {
+            setOpenSideNav(false);
+          }
+          if (!openSideNav) {
+            setOpenSideNav(true);
+          }
+        }}
+      >
+        <div className="svg">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="45px"
+            height="45px"
+            viewBox="0 0 24 24"
+            fill="none"
+          >
+            <path
+              fillRule="evenodd"
+              clipRule="evenodd"
+              d="M3.46447 20.5355C4.92893 22 7.28595 22 12 22C16.714 22 19.0711 22 20.5355 20.5355C22 19.0711 22 16.714 22 12C22 7.28595 22 4.92893 20.5355 3.46447C19.0711 2 16.714 2 12 2C7.28595 2 4.92893 2 3.46447 3.46447C2 4.92893 2 7.28595 2 12C2 16.714 2 19.0711 3.46447 20.5355ZM18.75 16C18.75 16.4142 18.4142 16.75 18 16.75H6C5.58579 16.75 5.25 16.4142 5.25 16C5.25 15.5858 5.58579 15.25 6 15.25H18C18.4142 15.25 18.75 15.5858 18.75 16ZM18 12.75C18.4142 12.75 18.75 12.4142 18.75 12C18.75 11.5858 18.4142 11.25 18 11.25H6C5.58579 11.25 5.25 11.5858 5.25 12C5.25 12.4142 5.58579 12.75 6 12.75H18ZM18.75 8C18.75 8.41421 18.4142 8.75 18 8.75H6C5.58579 8.75 5.25 8.41421 5.25 8C5.25 7.58579 5.58579 7.25 6 7.25H18C18.4142 7.25 18.75 7.58579 18.75 8Z"
+              fill="currentColor"
+            />
+          </svg>
+        </div>
+      </div>
+      <TopLinks ref={wrapperRef}>
         <Lnks
           to={"/u/overview/dashboard"}
           className={activeMobileTab === "dashboard" ? "active" : null}
@@ -89,7 +120,7 @@ function SideNav({ openSideNav, activeMobileTab }) {
                 fillRule="evenodd"
                 clipRule="evenodd"
                 d="M16.5 7.063C16.5 10.258 14.57 13 12 13c-2.572 0-4.5-2.742-4.5-5.938C7.5 3.868 9.16 2 12 2s4.5 1.867 4.5 5.063zM4.102 20.142C4.487 20.6 6.145 22 12 22c5.855 0 7.512-1.4 7.898-1.857a.416.416 0 0 0 .09-.317C19.9 18.944 19.106 15 12 15s-7.9 3.944-7.989 4.826a.416.416 0 0 0 .091.317z"
-                fill="#ffffff"
+                fill="currentColor"
               />
             </svg>
           </div>
@@ -132,28 +163,53 @@ const Wrapper = styled.div`
   width: fit-content;
   max-width: 320px;
   height: fit-content;
-  background-color: #fdfdfd;
   display: none;
-  top: 0;
+  top: 10px;
   right: 0;
   z-index: 10;
-  border-radius: 10px 0px 0px 10px;
-  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  overflow-x: hidden;
 
   @media screen and (max-width: 540px) {
     display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+  }
+
+  .hamburger-holder {
+    display: flex;
+    justify-content: flex-end;
+    padding-right: 10px;
+    cursor: pointer;
+    overflow: hidden;
+
+    .svg {
+      background-color: #ffffff96;
+      padding: 0px;
+      width: 45px;
+      height: 45px;
+      margin: 0px;
+      border-radius: 15px;
+      box-sizing: border-box;
+      svg {
+        color: black;
+      }
+    }
   }
 `;
 
 const TopLinks = styled.div`
+  background-color: #fdfdfd;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  border-radius: 10px 0px 0px 10px;
   position: relative;
   display: flex;
   flex-direction: column;
   gap: 15px;
   align-items: flex-start;
   width: fit-content;
-  padding: 30px 20px 30px 0px;
+  padding: 30px 10px 30px 10px;
   border-radius: 10px 0px 0px 10px;
+  /* pointer-events: none; */
 `;
 
 const Lnks = styled(Link)`

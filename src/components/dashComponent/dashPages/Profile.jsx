@@ -4,6 +4,8 @@ import flag from "/images/flag.png";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 
+import profilePic from "/images/accountPic.png";
+
 function Profile() {
   const navigate = useNavigate();
   const [userDetails, setUserDetails] = useState(() => {
@@ -36,7 +38,9 @@ function Profile() {
           <p className="small">View and modify user account details</p>
         </section>
         <Header>
-          <div className="avatar"></div>
+          <div className="avatar">
+            <img src={profilePic} alt="" />
+          </div>
           <h2>
             {userDetails.fullName.firstName} {userDetails.fullName.lastName}
           </h2>
@@ -163,7 +167,17 @@ const Header = styled.div`
     width: 160px;
     aspect-ratio: 1;
     background-color: var(--medium-grey);
+
     border-radius: 50%;
+    display: grid;
+    place-content: center;
+    position: relative;
+
+    img {
+      width: 100px;
+      aspect-ratio: 1;
+      position: relative;
+    }
   }
 `;
 

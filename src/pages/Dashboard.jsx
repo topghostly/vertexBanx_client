@@ -5,6 +5,7 @@ import DashNav from "../components/dashComponent/DashNav";
 import { motion } from "framer-motion";
 import { Outlet, useLocation } from "react-router-dom";
 import MobileBottomNav from "../components/dashComponent/MobileBottomNav";
+import SideNav from "../components/dashComponent/dashContent/SideNac";
 
 function Dashboard() {
   const location = useLocation();
@@ -20,6 +21,7 @@ function Dashboard() {
   return (
     <Wrapper>
       <Holder>
+        <SideNav activeMobileTab={activeMobileTab} />
         <div className="content">
           <DashNav activeMobileTab={activeMobileTab} />
           <div className="dash-holder">
@@ -28,10 +30,10 @@ function Dashboard() {
         </div>
         <div className="content-mobile">
           <Outlet />
-          <div className="bottom-space"></div>
+          {/* <div className="bottom-space"></div> */}
         </div>
       </Holder>
-      <MobileBottomNav activeMobileTab={activeMobileTab} />
+      {/* <MobileBottomNav activeMobileTab={activeMobileTab} /> */}
     </Wrapper>
   );
 }

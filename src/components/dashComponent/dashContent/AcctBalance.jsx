@@ -240,6 +240,7 @@ const Holder = styled.div`
         @media screen and (max-width: 540px) {
           width: 190px;
           height: 34px;
+          background-color: #422d2d;
         }
       }
     }
