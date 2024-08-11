@@ -58,6 +58,13 @@ const Wrapper = styled.div`
   grid-template-columns: 20% 44% 6% 30%;
   padding: 0px 10px;
   padding-bottom: 10px;
+  transition: all 0.1s ease-in-out;
+
+  &:hover {
+    background-color: var(--medium-grey);
+    cursor: pointer;
+    transition: all 0.1s ease-in-out;
+  }
 
   .icon {
     width: 45px;
