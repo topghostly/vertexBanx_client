@@ -68,6 +68,7 @@ const MainHold = styled.div`
   overflow: hidden;
   z-index: 999;
 `;
+
 const Wrapper = styled.div`
   position: absolute;
   width: 360px;
