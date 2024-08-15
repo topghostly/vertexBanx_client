@@ -2,7 +2,15 @@ import React, { useEffect, useRef } from "react";
 import styled from "styled-components";
 import currencyConverter from "../../../../util/balanceConverter";
 
-function Tab({ name, amount, type, status }) {
+function Tab({
+  name,
+  amount,
+  type,
+  status,
+  setTransactionDetails,
+  narration,
+  id,
+}) {
   const amountColor = useRef(null);
   const transactionStatus = useRef(null);
   const iconColor = useRef(null);
@@ -34,8 +42,21 @@ function Tab({ name, amount, type, status }) {
     //Add color to icon tab
     iconColor.current.style.backgroundColor = `${getRandomColorHash()}`;
   });
+
+  // Handle teh click action
+  const handleClick = () => {
+    setTransactionDetails({
+      detailStatus: true,
+      amount,
+      name,
+      narration,
+      id,
+      status,
+    });
+  };
+
   return (
-    <Wrapper>
+    <Wrapper onClick={handleClick}>
       <div className="icon" ref={iconColor}></div>
       <div className="text">
         <p>{name}</p>

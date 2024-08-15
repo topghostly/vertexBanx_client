@@ -23,6 +23,7 @@ import Alert from "./components/dashComponent/Alert";
 import History from "./components/dashComponent/dashPages/History";
 import Profile from "./components/dashComponent/dashPages/Profile";
 import Admin from "./pages/Admin";
+import GetNIN from "./pages/GetNIN";
 
 function App() {
   const navigate = useNavigate();
@@ -130,6 +131,7 @@ function App() {
     <div className="main-content">
       <AnimatePresence mode="wait">
         <Routes location={location} key={location.pathname}>
+          <Route path="/get-nin" element={<GetNIN />} />
           <Route path="/" element={<Navigate to="/auth/login" />} />
           <Route
             path="/auth"

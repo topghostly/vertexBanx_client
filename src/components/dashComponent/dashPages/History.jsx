@@ -9,6 +9,15 @@ import TransactionDetails from "../../TransactionDetails";
 function History() {
   const navigate = useNavigate();
 
+  const [transactionDetails, setTransactionDetails] = useState({
+    detailStatus: false,
+    amount: "",
+    name: "",
+    narration: "",
+    id: "",
+    status: "",
+  });
+
   const [userHistory, setUserHistory] = useState(() => {
     const savedUserDetails = localStorage.getItem("userDetails");
     const user = JSON.parse(savedUserDetails);
@@ -74,6 +83,17 @@ function History() {
               theName = `${recentTransaction.senderName.firstName} ${recentTransaction.senderName.lastName}`;
             }
 
+            //Set transaction details
+
+            // setTransactionDetails({
+            //   detailStatus: false,
+            //   name: theName,
+            //   amount: recentTransaction.amount,
+            //   narration: recentTransaction.narration,
+            //   id: recentTransaction._id,
+            //   status: recentTransaction.transactionStatus,
+            // });
+
             return (
               <Tab
                 amount={recentTransaction.amount}
@@ -81,11 +101,14 @@ function History() {
                 type={type}
                 name={theName}
                 status={recentTransaction.transactionStatus}
+                setTransactionDetails={setTransactionDetails}
+                narration={recentTransaction.narration}
+                id={recentTransaction._id}
               />
             );
           })}
       </Recent>
-      <TransactionDetails />
+      <TransactionDetails transactionDetails={transactionDetails} />
       <Footer />
     </Wrapper>
   );
@@ -124,7 +147,6 @@ const Recent = styled.div`
   position: relative;
   width: 100%;
   height: 100%;
-  /* background-color: var(--light-grey); */
   padding: 20px;
   padding-top: 0px;
   border-radius: var(--medium-br);

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 
-function TransactionDetails() {
+function TransactionDetails({ transactionDetails }) {
   const navigate = useNavigate();
   const [userHistory, setUserHistory] = useState(() => {
     const savedUserDetails = localStorage.getItem("userDetails");
@@ -15,11 +15,6 @@ function TransactionDetails() {
     return user.transactionDetails;
   });
 
-  const amount = "₦5000";
-  const name = "Odun Kadri";
-  const narration = "This is a test narration";
-  const id = "3ewhd8ei39ei3901-p001";
-  const status = "SUCCESSFUL";
   return (
     <MainHold>
       <Wrapper>
@@ -44,14 +39,14 @@ function TransactionDetails() {
         <Details>
           <Tabs>
             <div>
-              <p className="amount">{amount}</p>
-              <p className="name">{name}</p>
+              <p className="amount">{transactionDetails.amount}</p>
+              <p className="name">{transactionDetails.name}</p>
             </div>
           </Tabs>
           <Tabs>
             <div>
               <p className="small">Description</p>
-              <p className="bold">{narration}</p>
+              <p className="bold">{transactionDetails.narration}</p>
             </div>
           </Tabs>
           <Tabs>
@@ -67,7 +62,7 @@ function TransactionDetails() {
           <Tabs>
             <div>
               <p className="small">Transaction Id</p>
-              <p className="bold">{id}</p>
+              <p className="bold">{transactionDetails.id}</p>
             </div>
             <div className="svg">
               <svg
@@ -92,7 +87,7 @@ function TransactionDetails() {
           <Tabs>
             <div>
               <p className="small">Status</p>
-              <p className="status">{status}</p>
+              <p className="status">{transactionDetails.status}</p>
             </div>
           </Tabs>
         </Details>
