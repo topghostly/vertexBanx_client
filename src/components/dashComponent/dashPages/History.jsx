@@ -10,7 +10,7 @@ function History() {
   const navigate = useNavigate();
 
   const [transactionDetails, setTransactionDetails] = useState({
-    detailStatus: false,
+    detailStatus: true,
     amount: "",
     name: "",
     narration: "",
@@ -83,17 +83,6 @@ function History() {
               theName = `${recentTransaction.senderName.firstName} ${recentTransaction.senderName.lastName}`;
             }
 
-            //Set transaction details
-
-            // setTransactionDetails({
-            //   detailStatus: false,
-            //   name: theName,
-            //   amount: recentTransaction.amount,
-            //   narration: recentTransaction.narration,
-            //   id: recentTransaction._id,
-            //   status: recentTransaction.transactionStatus,
-            // });
-
             return (
               <Tab
                 amount={recentTransaction.amount}
@@ -108,7 +97,12 @@ function History() {
             );
           })}
       </Recent>
-      <TransactionDetails transactionDetails={transactionDetails} />
+      {transactionDetails.detailStatus && (
+        <TransactionDetails
+          transactionDetails={transactionDetails}
+          setTransactionDetails={setTransactionDetails}
+        />
+      )}
       <Footer />
     </Wrapper>
   );

@@ -1,9 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
+import currencyConverter from "../../util/balanceConverter";
+import { motion } from "framer-motion";
+import gsap from "gsap";
 
-function TransactionDetails({ transactionDetails }) {
+function TransactionDetails({ transactionDetails, setTransactionDetails }) {
   const navigate = useNavigate();
+  const alertRef = useRef(null);
+
   const [userHistory, setUserHistory] = useState(() => {
     const savedUserDetails = localStorage.getItem("userDetails");
     const user = JSON.parse(savedUserDetails);
@@ -15,13 +20,63 @@ function TransactionDetails({ transactionDetails }) {
     return user.transactionDetails;
   });
 
+  // Handle tehe detail page closing
+  const handleClose = () => {
+    setTransactionDetails(false);
+  };
+
+  // Handle the copy function
+  const handleCopy = () => {
+    navigator.clipboard
+      .writeText(transactionDetails.id)
+      .then(() => {
+        const tl1 = gsap.timeline();
+        tl1
+          .fromTo(
+            alertRef.current,
+            {
+              top: "-300px",
+            },
+            {
+              top: "30px",
+              duration: 0.6,
+              ease: "power3.out",
+              delay: 0.1,
+            }
+          )
+          .to(alertRef.current, {
+            delay: 2,
+            top: "-300px",
+            duration: 0.6,
+            ease: "power3.in",
+          });
+      })
+      .catch((err) => {
+        console.error("Failed to copy text: ", err);
+      });
+  };
+
   return (
-    <MainHold>
+    <MainHold
+      initial={{
+        opacity: 0,
+      }}
+      animate={{
+        opacity: 1,
+      }}
+      exit={{
+        opacity: 0,
+      }}
+      transition={{
+        delay: 0.2,
+        duration: 0.2,
+      }}
+    >
       <Wrapper>
         <div className="heading">
           <div className="share">Share</div>
           <p>Transaction</p>
-          <div className="cancel">
+          <div className="cancel" onClick={handleClose}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 48 48"
@@ -39,7 +94,9 @@ function TransactionDetails({ transactionDetails }) {
         <Details>
           <Tabs>
             <div>
-              <p className="amount">{transactionDetails.amount}</p>
+              <p className="amount">
+                {currencyConverter(transactionDetails.amount)}
+              </p>
               <p className="name">{transactionDetails.name}</p>
             </div>
           </Tabs>
@@ -64,7 +121,7 @@ function TransactionDetails({ transactionDetails }) {
               <p className="small">Transaction Id</p>
               <p className="bold">{transactionDetails.id}</p>
             </div>
-            <div className="svg">
+            <div className="svg" onClick={handleCopy}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="26px"
@@ -91,12 +148,15 @@ function TransactionDetails({ transactionDetails }) {
             </div>
           </Tabs>
         </Details>
+        <CopyAlert ref={alertRef}>
+          <p>_id Copied</p>
+        </CopyAlert>
       </Wrapper>
     </MainHold>
   );
 }
 
-const MainHold = styled.div`
+const MainHold = styled(motion.div)`
   position: fixed;
   top: 0px;
   left: 0px;
@@ -130,6 +190,17 @@ const Wrapper = styled.div`
     padding-bottom: 10px;
     border-bottom: solid 3px var(--medium-grey);
     .cancel {
+      cursor: pointer;
+      display: grid;
+      place-content: center;
+      border-radius: 50%;
+      padding: 1px;
+      transition: all 0.2s ease-in-out;
+
+      &:hover {
+        background-color: #e0e0e0;
+        transition: all 0.2s ease-in-out;
+      }
       svg {
         width: 35px;
       }
@@ -216,6 +287,26 @@ const Tabs = styled.div`
       font-family: "Manrope-Bold";
       color: var(--theme-color);
     }
+  }
+`;
+
+const CopyAlert = styled.div`
+  padding: 5px 10px;
+  max-width: 150px;
+  background-color: #67cc67;
+  border: solid 2px #96d496;
+  color: white;
+  position: fixed;
+  left: 50%;
+  top: -300px;
+  transform: translateX(-50%);
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+
+  P {
+    font-size: 13px;
   }
 `;
 export default TransactionDetails;

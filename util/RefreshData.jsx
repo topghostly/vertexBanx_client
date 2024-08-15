@@ -8,9 +8,8 @@ const RefreshDatabase = ({ setRefreshDetails, setBalLoad }) => {
   const [userDetails, setUserDetails] = useState(() => {
     const savedUserDetails = localStorage.getItem("userDetails");
     const user = JSON.parse(savedUserDetails);
-
     if (!user.userDetails) {
-      navigate("/images/u/overview/dashboard");
+      navigate("/auth/login");
     }
     return user.userDetails;
   });
