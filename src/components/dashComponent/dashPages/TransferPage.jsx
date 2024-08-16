@@ -20,6 +20,7 @@ function TransferPage({ setAlert }) {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [allowTrasfer, setAllowTransfer] = useState(false);
+  // const [userNinDetails, setUserNinDetails] = useState({});
 
   const [userDetails, setUserDetails] = useState(() => {
     const savedUserDetails = localStorage.getItem("userDetails");
@@ -39,8 +40,52 @@ function TransferPage({ setAlert }) {
 
   orbit.register();
 
+  // 2FA Logic
+  const triggerTwoFactorAuthentication = () => {};
+
+  //Calculate the distance
+  const calculateDistance = (lat1, lon1, lat2, lon2) => {
+    const toRadians = (degrees) => degrees * (Math.PI / 180);
+
+    const R = 6371; // Radius of the Earth in km
+    const dLat = toRadians(lat2 - lat1);
+    const dLon = toRadians(lon2 - lon1);
+    const a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(toRadians(lat1)) *
+        Math.cos(toRadians(lat2)) *
+        Math.sin(dLon / 2) *
+        Math.sin(dLon / 2);
+
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    const distance = R * c; // Distance in km
+
+    return distance;
+  };
+
   //Validate 2FA transfer mode
-  const securityCheck = (latitude, longitude) => {};
+  const securityCheck = async (latitude, longitude) => {
+    try {
+      const ninDetails = await axios.get(
+        `http://localhost:3030/nin/get-nin/${userDetails.nin}`
+      );
+      if (ninDetails.code === "SUCCESS") {
+        const distance = calculateDistance(
+          latitude,
+          longitude,
+          ninDetails.data.latitude,
+          ninDetails.data.longitude
+        );
+        if (distance > 5) {
+          triggerTwoFactorAuthentication();
+        } else {
+          await getActualLocation(latitude, longitude);
+        }
+      }
+    } catch (error) {
+      console.error("An error occured while getting NIN details");
+    }
+  };
 
   // Get actual location
   const getActualLocation = async (latitude, longitude) => {

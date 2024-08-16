@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import backgroundimage from "/images/ninbackground.jpg";
 import logo from "/images/ninlogo.png";
 import styled from "styled-components";
@@ -20,6 +20,7 @@ function GetNIN() {
 
   const [formError, setFormError] = useState("");
 
+  const alertRef = useRef(null);
   const charUppercase = (value) => {
     return value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
   };
@@ -100,7 +101,11 @@ function GetNIN() {
         payload
       );
 
-      console.log("The NIN response is", response);
+      if (response.data.status === "SUCCESS") {
+        alert(`NIN registered successfully, NIN: ${response.data.data.nin}`);
+      } else {
+        alert("An error occured, please try again");
+      }
     } catch (error) {
       alert("An error occurred, please try again");
       setNinDetails({
@@ -132,6 +137,7 @@ function GetNIN() {
             type="text"
             name="firstname"
             value={ninDetails.firstName}
+            autoComplete="off"
             onChange={(e) => {
               setNinDetails({
                 ...ninDetails,
@@ -144,6 +150,7 @@ function GetNIN() {
             type="text"
             name="lastName"
             value={ninDetails.lastName}
+            autoComplete="off"
             onChange={(e) => {
               setNinDetails({
                 ...ninDetails,
@@ -156,6 +163,7 @@ function GetNIN() {
             type="date"
             name="dateOfBirth"
             value={ninDetails.dateOfBirth}
+            autoComplete="off"
             onChange={(e) => {
               setNinDetails({
                 ...ninDetails,
@@ -169,6 +177,7 @@ function GetNIN() {
             type="text"
             name="stateOfOrigin"
             value={ninDetails.stateOfOrigin}
+            autoComplete="off"
             onChange={(e) => {
               setNinDetails({
                 ...ninDetails,
@@ -181,6 +190,7 @@ function GetNIN() {
             type="text"
             name="lgaOfOrigin"
             value={ninDetails.lgaOfOrigin}
+            autoComplete="off"
             onChange={(e) => {
               setNinDetails({
                 ...ninDetails,
@@ -194,6 +204,7 @@ function GetNIN() {
             type="text"
             name="resStreet"
             value={ninDetails.resStreet}
+            autoComplete="off"
             onChange={(e) => {
               setNinDetails({
                 ...ninDetails,
@@ -206,6 +217,7 @@ function GetNIN() {
             type="text"
             name="resLGA"
             value={ninDetails.resLGA}
+            autoComplete="off"
             onChange={(e) => {
               setNinDetails({
                 ...ninDetails,
@@ -218,6 +230,7 @@ function GetNIN() {
             type="text"
             name="resState"
             value={ninDetails.resState}
+            autoComplete="off"
             onChange={(e) => {
               setNinDetails({
                 ...ninDetails,
@@ -231,6 +244,7 @@ function GetNIN() {
             type="text"
             name="phone-number"
             value={ninDetails.phoneNumber}
+            autoComplete="off"
             onChange={(e) => {
               setNinDetails({
                 ...ninDetails,
@@ -243,6 +257,7 @@ function GetNIN() {
             type="mail"
             name="email"
             value={ninDetails.email}
+            autoComplete="off"
             onChange={(e) => {
               setNinDetails({
                 ...ninDetails,
@@ -254,6 +269,9 @@ function GetNIN() {
           <button type="submit">Submit</button>
         </form>
       </Holder>
+      <CreditAlert ref={alertRef}>
+        <p>NIN created successfully</p>
+      </CreditAlert>
     </Wrapper>
   );
 }
@@ -347,6 +365,27 @@ const Holder = styled.section`
       font-size: 15px;
       margin: 0px auto;
     }
+  }
+`;
+
+const CreditAlert = styled.div`
+  padding: 10px 20px;
+  width: 100%;
+  max-width: 300px;
+  background-color: #67cc67;
+  border: solid 2px #96d496;
+  color: white;
+  position: fixed;
+  left: 50%;
+  top: -300px;
+  transform: translateX(-50%);
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+
+  P {
+    font-size: 14px;
   }
 `;
 

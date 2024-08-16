@@ -15,6 +15,8 @@ function Civil({ setLightUp, setregisterationDetails, registerationDetails }) {
     nin: "",
   });
 
+  const [verifiedNin, setVerifiedNin] = useState(false);
+
   const [error, setError] = useState("");
 
   const validateBVN = (bvn) => {
@@ -61,6 +63,22 @@ function Civil({ setLightUp, setregisterationDetails, registerationDetails }) {
     });
 
     navigate("/auth/create-acct/password-details");
+  };
+
+  const verifyNIN = async (nin) => {
+    try {
+      const ninDetails = await axios.get(
+        `http://localhost:3030/nin/get-nin/${nin}`
+      );
+
+      if (ninDetails.code === "NIN_FOUND") {
+        setVerifiedNin(true);
+      } else {
+        setVerifiedNin(false);
+      }
+    } catch (error) {
+      console.error("An error occured while getting NIN details");
+    }
   };
 
   useEffect(() => {
@@ -168,11 +186,27 @@ function Civil({ setLightUp, setregisterationDetails, registerationDetails }) {
             ...civilInfo,
             nin: e.target.value,
           });
+
+          if (e.target.value.length === 11) {
+            console.log("Counted 11");
+            verifyNIN(e.target.value);
+          } else if (e.target.value.length !== 10) {
+            setVerifiedNin(false);
+          }
         }}
       />
+      {verifiedNin ? (
+        <p className="nin-apprved">Valid NIN</p>
+      ) : (
+        <p className="nin-disapprove">Invalid NIN</p>
+      )}
       <div className="foot-part">
         <div className="error-statement">{error}</div>
-        <button onClick={handleSubmit}>Continue</button>
+        {verifiedNin ? (
+          <button onClick={handleSubmit}>Continue</button>
+        ) : (
+          <InactiveButton>Invalid NIN</InactiveButton>
+        )}
       </div>
     </Wrapper>
   );
@@ -186,6 +220,13 @@ const Wrapper = styled(motion.div)`
   flex-direction: column;
   gap: 20px;
   width: 100%;
+
+  .nin-apprved {
+    color: #106310;
+  }
+  .nin-disapprove {
+    color: red;
+  }
   .foot-part {
     display: flex;
     flex-direction: column;
@@ -223,5 +264,21 @@ const DropDownForm = styled.div`
     padding-left: 10px;
     color: var(--dark-grey);
   }
+`;
+
+const InactiveButton = styled.button`
+  position: relative;
+  width: 110px;
+  color: #636363;
+  background-color: #7c7c7c;
+  height: 40px;
+  outline: none;
+  border: solid 1px black;
+  border-radius: 6px;
+  margin-top: 10px;
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+  font-family: "Manrope-SemiBold";
+  margin: 0px auto;
 `;
 export default Civil;
