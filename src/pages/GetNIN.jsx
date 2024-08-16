@@ -1,6 +1,8 @@
 import React, { useState } from "react";
-import backgroundImage from "/images/bacimg.png";
+import backgroundimage from "/images/ninbackground.jpg";
+import logo from "/images/ninlogo.png";
 import styled from "styled-components";
+import axios from "axios";
 
 function GetNIN() {
   const [ninDetails, setNinDetails] = useState({
@@ -16,23 +18,114 @@ function GetNIN() {
     email: "",
   });
 
+  const [formError, setFormError] = useState("");
+
+  const charUppercase = (value) => {
+    return value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
+  };
+
+  const checkState = (value) => {
+    value = value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
+    if (!value.toLowerCase().endsWith(" state")) {
+      value += " State";
+    }
+    return value;
+  };
+
+  const validateFields = () => {
+    const {
+      firstName,
+      lastName,
+      dateOfBirth,
+      stateOfOrigin,
+      lgaOfOrigin,
+      resStreet,
+      resLGA,
+      resState,
+      phoneNumber,
+      email,
+    } = ninDetails;
+
+    if (!firstName.trim()) return "First Name is required";
+    if (!lastName.trim()) return "Last Name is required";
+    if (!dateOfBirth) return "Date of Birth is required";
+    if (!stateOfOrigin.trim()) return "State of Origin is required";
+    if (!lgaOfOrigin.trim()) return "LGA of Origin is required";
+    if (!resStreet.trim()) return "Residential Street Name is required";
+    if (!resLGA.trim()) return "Residential LGA is required";
+    if (!resState.trim()) return "Residential State is required";
+
+    const phoneRegex = /^[0-9]{11}$/;
+    if (!phoneRegex.test(phoneNumber)) return "Phone number must be 11 digits";
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) return "Invalid email address";
+
+    return null;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setFormError("");
+    const error = validateFields();
+    if (error) {
+      //   alert(error);
+      setFormError(error);
+      return;
+    }
 
-    console.log(ninDetails);
+    const formattedNinDetails = {
+      firstName: charUppercase(ninDetails.firstName),
+      lastName: charUppercase(ninDetails.lastName),
+      dateOfBirth: ninDetails.dateOfBirth,
+      stateOfOrigin: checkState(ninDetails.stateOfOrigin),
+      lgaOfOrigin: charUppercase(ninDetails.lgaOfOrigin),
+      resStreet: charUppercase(ninDetails.resStreet),
+      resLGA: charUppercase(ninDetails.resLGA),
+      resState: checkState(ninDetails.resState),
+      phoneNumber: ninDetails.phoneNumber,
+      email: ninDetails.email,
+    };
+
+    const location = `${formattedNinDetails.resStreet} ${formattedNinDetails.resLGA}, ${formattedNinDetails.resState}`;
+
+    const payload = {
+      ...formattedNinDetails,
+      location,
+    };
+
+    try {
+      const response = await axios.post(
+        "http://localhost:3030/nin/register-nin",
+        payload
+      );
+
+      console.log("The NIN response is", response);
+    } catch (error) {
+      alert("An error occurred, please try again");
+      setNinDetails({
+        firstName: "",
+        lastName: "",
+        dateOfBirth: "",
+        stateOfOrigin: "",
+        lgaOfOrigin: "",
+        resStreet: "",
+        resLGA: "",
+        resState: "",
+        phoneNumber: "",
+        email: "",
+      });
+    }
   };
+
   return (
-    <Wrapper>
+    <Wrapper backimage={backgroundimage}>
       <nav>
-        <h4>NIN Registeration</h4>
+        <img src={logo} alt="" />
       </nav>
       <Holder>
         <p className="header">Please fill the form appropriately</p>
-        <form
-          onSubmit={(e) => {
-            handleSubmit(e);
-          }}
-        >
+        <form onSubmit={handleSubmit}>
           <p>Tell us about yourself</p>
           <label htmlFor="firstName">Firstname</label>
           <input
@@ -157,11 +250,10 @@ function GetNIN() {
               });
             }}
           />
-
+          <p className="error">{formError}</p>
           <button type="submit">Submit</button>
         </form>
       </Holder>
-      <img src={backgroundImage} alt="bacground-images" />
     </Wrapper>
   );
 }
@@ -175,27 +267,20 @@ const Wrapper = styled.div`
   flex-direction: column;
   gap: 30px;
   padding-bottom: 30px;
+  background-image: url(${(props) => props.backimage});
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
 
   nav {
     display: flex;
     justify-content: space-between;
     width: 100%;
-    height: 80px;
-    background-color: red;
+    height: 120px;
     align-items: center;
     max-width: 1280px;
     padding: 0px 20px;
     margin: 0px auto;
-  }
-  img {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 90vw;
-    max-width: 750px;
-    z-index: -1;
-    opacity: 0.7;
   }
 `;
 
@@ -211,6 +296,7 @@ const Holder = styled.section`
   gap: 35px;
   border-radius: 10px;
   padding: 30px 10px;
+  background-color: white;
 
   p.header {
     font-family: "Manrope-Bold";
@@ -224,13 +310,22 @@ const Holder = styled.section`
     flex-direction: column;
     gap: 5px;
 
+    p.error {
+      color: red;
+      font-size: 11px;
+      font-family: "Manrope-Bold";
+      margin-top: 10px;
+    }
+
     button {
       width: 130px;
       height: 38px;
-      background-color: #3ab93a;
+      background-color: #28915d;
       border: none;
       border-radius: 5px;
       color: white;
+      cursor: pointer;
+      margin-top: 10px;
     }
 
     p {
@@ -243,12 +338,14 @@ const Holder = styled.section`
       font-family: "Manrope-Bold";
       font-size: 12px;
     }
+
     input {
-      width: 100%;
+      width: 98%;
       height: 45px;
       margin-bottom: 20px;
       padding-left: 10px;
       font-size: 15px;
+      margin: 0px auto;
     }
   }
 `;

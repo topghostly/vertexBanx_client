@@ -39,6 +39,9 @@ function TransferPage({ setAlert }) {
 
   orbit.register();
 
+  //Validate 2FA transfer mode
+  const securityCheck = (latitude, longitude) => {};
+
   // Get actual location
   const getActualLocation = async (latitude, longitude) => {
     console.log("this have started", latitude, longitude);
@@ -126,11 +129,13 @@ function TransferPage({ setAlert }) {
     }
   };
 
+  //Check for valid phone number
   const isValidPhoneNumber = (input) => {
     const regex = /^\d{10}$/;
     return regex.test(input);
   };
 
+  //Check for valid amount
   const validAmount = () => {
     const inputedAmount = Number(transfer.amount);
     const actualAmount = userDetails.balance;
