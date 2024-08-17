@@ -62,7 +62,7 @@ const RefreshDatabase = ({ setRefreshDetails, setBalLoad }) => {
               // console.log("The beneficiaryLocation is", beneficiaryLocation);
 
               const response = await axios.post(
-                `https://vertex-server-9jyo.onrender.com/v0/api/verify/delete/${verificationID}`,
+                `http://localhost:3030/v0/api/verify/delete/${verificationID}`,
                 { beneficiaryLocation }
               );
 
@@ -99,7 +99,7 @@ const RefreshDatabase = ({ setRefreshDetails, setBalLoad }) => {
   const fetchUpdate = useCallback(async () => {
     try {
       const response = await axios.get(
-        `https://vertex-server-9jyo.onrender.com/v0/api/verify/update/${userAccountNumber}`
+        `http://localhost:3030/v0/api/verify/update/${userAccountNumber}`
       );
       if (response.data.code === "FOUND_NEW_TRANSACTION_UPDATE") {
         await newUpdateHandler(response.data.date._id);

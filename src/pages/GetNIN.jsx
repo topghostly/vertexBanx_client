@@ -19,6 +19,7 @@ function GetNIN() {
   });
 
   const [formError, setFormError] = useState("");
+  const [loading, setLoading] = useState("");
 
   const alertRef = useRef(null);
   const charUppercase = (value) => {
@@ -67,6 +68,7 @@ function GetNIN() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     setFormError("");
     const error = validateFields();
     if (error) {
@@ -74,6 +76,8 @@ function GetNIN() {
       setFormError(error);
       return;
     }
+
+    setLoading(true);
 
     const formattedNinDetails = {
       firstName: charUppercase(ninDetails.firstName),
@@ -102,11 +106,41 @@ function GetNIN() {
       );
 
       if (response.data.status === "SUCCESS") {
+        setLoading(false);
         alert(`NIN registered successfully, NIN: ${response.data.data.nin}`);
+        setNinDetails({
+          firstName: "",
+          lastName: "",
+          dateOfBirth: "",
+          stateOfOrigin: "",
+          lgaOfOrigin: "",
+          resStreet: "",
+          resLGA: "",
+          resState: "",
+          phoneNumber: "",
+          email: "",
+        });
+      } else if (response.data.code === "EXISTING_NIN") {
+        setLoading(false);
+        alert("The User already exist");
+        setNinDetails({
+          firstName: "",
+          lastName: "",
+          dateOfBirth: "",
+          stateOfOrigin: "",
+          lgaOfOrigin: "",
+          resStreet: "",
+          resLGA: "",
+          resState: "",
+          phoneNumber: "",
+          email: "",
+        });
       } else {
+        setLoading(false);
         alert("An error occured, please try again");
       }
     } catch (error) {
+      setLoading(false);
       alert("An error occurred, please try again");
       setNinDetails({
         firstName: "",
@@ -266,7 +300,7 @@ function GetNIN() {
             }}
           />
           <p className="error">{formError}</p>
-          <button type="submit">Submit</button>
+          <button type="submit">{loading ? "Registering" : "Submit"}</button>
         </form>
       </Holder>
       <CreditAlert ref={alertRef}>
@@ -344,6 +378,12 @@ const Holder = styled.section`
       color: white;
       cursor: pointer;
       margin-top: 10px;
+      transition: all 0.1s ease-in-out;
+
+      &:hover {
+        transition: all 0.1s ease-in-out;
+        background-color: green;
+      }
     }
 
     p {
