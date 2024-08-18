@@ -82,21 +82,6 @@ function TransferPage({ setAlert }) {
     console.log("Otp inoutted");
     const otpValue = otp.join("");
 
-    // try {
-    //   const otpDetails = await axios.post(`http://localhost:3030/otp/verify`, {
-    //     usermail: userDetails.emailAddress,
-    //     otp: otpValue,
-    //   });
-
-    //   if (otpDetails.status === "SUCCESS") {
-    //     setLoading(true);
-    //     setOtpPopup(false);
-    //     await getActualLocation(actuallatitude, actuallongitude);
-    //   }
-    // } catch (error) {
-    //   alert("An error occured while verifying OTP");
-    // }
-
     if (recievedOtp === otpValue) {
       setLoading(true);
       setOtpPopup(false);
@@ -160,19 +145,6 @@ function TransferPage({ setAlert }) {
       expTime: generateExpTime(),
     };
 
-    // emailjs.init({
-    //   publicKey: "JjaRLIhcF0urdjSfX",
-    //   blockHeadless: true,
-    //   blockList: {
-    //     list: ["foo@emailjs.com", "bar@emailjs.com"],
-    //     watchVariable: "userEmail",
-    //   },
-    //   limitRate: {
-    //     id: "app",
-    //     throttle: 10000,
-    //   },
-    // });
-
     emailjs
       .send(
         "service_atc86bv",
@@ -197,15 +169,6 @@ function TransferPage({ setAlert }) {
   const triggerTwoFactorAuthentication = async () => {
     console.log("Started 2FA");
     try {
-      // const sentOtp = await axios.get(
-      //   `http://localhost:3030/otp/get/${userDetails.emailAddress}`
-      // );
-      // if (sentOtp.status === "SUCCESS") {
-      //   setRecievedOtp(sentOtp.data.otp);
-      //   await sendOtp(sentOtp.data.otp, sentOtp.data.usermail);
-      // } else {
-      //   alert("A error occured while validating the transfer");
-      // }
       const OTP = Math.floor(1000 + Math.random() * 9000).toString();
       console.log("the OTP is", OTP);
       setRecievedOtp(OTP);
@@ -801,7 +764,7 @@ const Holder2FA = styled.div`
   max-width: 400px;
   height: 500px;
   background-color: #ffffff;
-  top: 50%;
+  top: 200%;
   left: 50%;
   transform: translate(-50%, -50%);
   border-radius: var(--medium-br);
