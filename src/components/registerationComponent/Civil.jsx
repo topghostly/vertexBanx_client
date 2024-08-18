@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import axios from "axios";
 
 function Civil({ setLightUp, setregisterationDetails, registerationDetails }) {
   const navigate = useNavigate();
@@ -66,12 +67,14 @@ function Civil({ setLightUp, setregisterationDetails, registerationDetails }) {
   };
 
   const verifyNIN = async (nin) => {
+    console.log("Started verifing NIN");
     try {
       const ninDetails = await axios.get(
         `http://localhost:3030/nin/get-nin/${nin}`
       );
+      console.log("The NIN details", ninDetails);
 
-      if (ninDetails.code === "NIN_FOUND") {
+      if (ninDetails.data.code === "NIN_FOUND") {
         setVerifiedNin(true);
       } else {
         setVerifiedNin(false);
@@ -106,7 +109,6 @@ function Civil({ setLightUp, setregisterationDetails, registerationDetails }) {
         name="mail"
         placeholder="Mail"
         autoComplete="off"
-        style="text-transform: lowercase;"
         value={civilInfo.mail}
         onChange={(e) => {
           setCivilInfo({
@@ -134,7 +136,8 @@ function Civil({ setLightUp, setregisterationDetails, registerationDetails }) {
         type="text"
         name="residentialAddress"
         autoComplete="off"
-        placeholder="Residential address"
+        placeholder="Residential address (LGA, State)"
+        style={{ textTransform: "capitalize" }}
         value={civilInfo.residentialAddress}
         onChange={(e) => {
           setCivilInfo({
@@ -190,22 +193,29 @@ function Civil({ setLightUp, setregisterationDetails, registerationDetails }) {
           if (e.target.value.length === 11) {
             console.log("Counted 11");
             verifyNIN(e.target.value);
-          } else if (e.target.value.length !== 10) {
+          } else if (e.target.value.length !== 11) {
             setVerifiedNin(false);
           }
         }}
       />
-      {verifiedNin ? (
+      {/* {verifiedNin ? (
         <p className="nin-apprved">Valid NIN</p>
       ) : (
         <p className="nin-disapprove">Invalid NIN</p>
-      )}
+      )} */}
       <div className="foot-part">
         <div className="error-statement">{error}</div>
         {verifiedNin ? (
           <button onClick={handleSubmit}>Continue</button>
         ) : (
-          <InactiveButton>Invalid NIN</InactiveButton>
+          <InactiveButton
+            style={{
+              backgroundColor: "grey",
+              border: "solid 1px grey",
+            }}
+          >
+            Invalid NIN
+          </InactiveButton>
         )}
       </div>
     </Wrapper>
@@ -223,9 +233,13 @@ const Wrapper = styled(motion.div)`
 
   .nin-apprved {
     color: #106310;
+    font-size: 12px;
+    font-family: "Manrope-Bold";
   }
   .nin-disapprove {
     color: red;
+    font-family: "Manrope-Bold";
+    font-size: 12px;
   }
   .foot-part {
     display: flex;

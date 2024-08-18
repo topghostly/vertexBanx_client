@@ -63,7 +63,7 @@ function App() {
     console.log("The registration details:", registerationDetails);
     try {
       const responce = await axios.post(
-        "https://vertex-server-9jyo.onrender.com/v0/api/auth/register",
+        "http://localhost:3030/v0/api/auth/register",
         registerationDetails
       );
       if (responce.data.status === "SUCCESS") {
@@ -76,7 +76,24 @@ function App() {
         return setTimeout(() => {
           handleNavigation();
         }, 1000);
+      } else if (responce.data.code === "EXISTING_BVN") {
+        setAlert({
+          alertState: true,
+          alertType: "Failed",
+          alertDetails: "This BVN already exist on out database",
+        });
+        setHandleRegistration(false);
+        navigate("/auth/create-acct/personal-details");
+      } else if (responce.data.code === "EXISTING_NIN") {
+        setAlert({
+          alertState: true,
+          alertType: "Failed",
+          alertDetails: "This NIN already exist on out database",
+        });
+        setHandleRegistration(false);
+        navigate("/auth/create-acct/personal-details");
       } else {
+        console.log("An error occured while registering a user", responce);
         setAlert({
           alertState: true,
           alertType: "Failed",
@@ -86,6 +103,7 @@ function App() {
         navigate("/auth/create-acct/personal-details");
       }
     } catch (error) {
+      console.log("An error occured while trying to register a user", error);
       setAlert({
         alertState: true,
         alertType: "Failed",

@@ -8,19 +8,29 @@ import vertex from "/images/vertex.jpg";
 import { orbit } from "ldrs";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import lock from "/images/lock.png";
+import gsap from "gsap";
+import emailjs from "@emailjs/browser";
 
 import currencyConverter from "../../../../util/balanceConverter";
 import Footer from "../../Footer";
 
 function TransferPage({ setAlert }) {
   const navigate = useNavigate();
-  const buttonRef = useRef(null);
 
+  const buttonRef = useRef(null);
+  const inputRefs = useRef([]);
+  const otpRef = useRef([]);
+
+  const [otp, setOtp] = useState(["", "", "", ""]);
   const [beneficiaryName, setBeneficiaryName] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [allowTrasfer, setAllowTransfer] = useState(false);
-  // const [userNinDetails, setUserNinDetails] = useState({});
+  const [otpPopup, setOtpPopup] = useState(false);
+  const [actuallatitude, setActualLatitude] = useState();
+  const [actuallongitude, setActualLongitude] = useState();
+  const [recievedOtp, setRecievedOtp] = useState("");
 
   const [userDetails, setUserDetails] = useState(() => {
     const savedUserDetails = localStorage.getItem("userDetails");
@@ -40,11 +50,175 @@ function TransferPage({ setAlert }) {
 
   orbit.register();
 
+  //OTP boxes logic
+  const handleChange = (value, index) => {
+    if (!/^[0-9]$/.test(value)) return; // Allow only numerical values
+
+    const newOtp = [...otp];
+    newOtp[index] = value;
+    setOtp(newOtp);
+
+    // Move to the next input box if a value is entered
+    if (value !== "" && index < 3) {
+      inputRefs.current[index + 1].focus();
+    }
+  };
+
+  const handleKeyDown = (e, index) => {
+    if (e.key === "Backspace") {
+      if (otp[index] === "" && index > 0) {
+        // Move to the previous input box on backspace if the current box is empty
+        inputRefs.current[index - 1].focus();
+      } else {
+        // Clear the current input value on backspace
+        const newOtp = [...otp];
+        newOtp[index] = "";
+        setOtp(newOtp);
+      }
+    }
+  };
+
+  const handleOtpSubmit = async () => {
+    console.log("Otp inoutted");
+    const otpValue = otp.join("");
+
+    // try {
+    //   const otpDetails = await axios.post(`http://localhost:3030/otp/verify`, {
+    //     usermail: userDetails.emailAddress,
+    //     otp: otpValue,
+    //   });
+
+    //   if (otpDetails.status === "SUCCESS") {
+    //     setLoading(true);
+    //     setOtpPopup(false);
+    //     await getActualLocation(actuallatitude, actuallongitude);
+    //   }
+    // } catch (error) {
+    //   alert("An error occured while verifying OTP");
+    // }
+
+    if (recievedOtp === otpValue) {
+      setLoading(true);
+      setOtpPopup(false);
+      await getActualLocation(actuallatitude, actuallongitude);
+    } else {
+      alert("Invalid One Time Password");
+    }
+  };
+
+  // Otp pop up logic and animatiom
+  useEffect(() => {
+    if (!otpPopup) {
+      const tl1 = gsap.timeline();
+      tl1.to(otpRef.current, {
+        top: "200%",
+        duration: 0.6,
+        ease: "power3.in",
+      });
+    }
+
+    if (otpPopup) {
+      gsap.fromTo(
+        otpRef.current,
+        {
+          top: "200%",
+        },
+        {
+          top: "50%",
+          duration: 0.6,
+          ease: "power3.out",
+          delay: 0.3,
+        }
+      );
+    }
+  }, [otpPopup]);
+
+  // Logic for the expiration time
+  const generateExpTime = () => {
+    try {
+      const currentTime = new Date();
+      const expTime = new Date(currentTime.getTime() + 4 * 60000);
+
+      const hr = String(expTime.getHours()).padStart(2, "0");
+      const mint = String(expTime.getMinutes()).padStart(2, "0");
+
+      const formattedExpTime = `${hr}:${mint}`;
+
+      return formattedExpTime;
+    } catch (error) {
+      console.log(error);
+      return "5 minutes";
+    }
+  };
+
+  // Send otp to emall
+  const sendOtp = async (otp, userMail) => {
+    console.log("Started sending mail");
+    const templateParams = {
+      to_email: userMail,
+      otp,
+      expTime: generateExpTime(),
+    };
+
+    // emailjs.init({
+    //   publicKey: "JjaRLIhcF0urdjSfX",
+    //   blockHeadless: true,
+    //   blockList: {
+    //     list: ["foo@emailjs.com", "bar@emailjs.com"],
+    //     watchVariable: "userEmail",
+    //   },
+    //   limitRate: {
+    //     id: "app",
+    //     throttle: 10000,
+    //   },
+    // });
+
+    emailjs
+      .send(
+        "service_atc86bv",
+        "template_90jyytl",
+        templateParams,
+        "JjaRLIhcF0urdjSfX"
+      )
+      .then(
+        (response) => {
+          console.log("SUCCESS!", response.status, response.text);
+          setOtpPopup(true);
+          setLoading(false);
+        },
+        (error) => {
+          console.error("FAILED...", error);
+          alert("An unexpected error occured");
+        }
+      );
+  };
+
   // 2FA Logic
-  const triggerTwoFactorAuthentication = () => {};
+  const triggerTwoFactorAuthentication = async () => {
+    console.log("Started 2FA");
+    try {
+      // const sentOtp = await axios.get(
+      //   `http://localhost:3030/otp/get/${userDetails.emailAddress}`
+      // );
+      // if (sentOtp.status === "SUCCESS") {
+      //   setRecievedOtp(sentOtp.data.otp);
+      //   await sendOtp(sentOtp.data.otp, sentOtp.data.usermail);
+      // } else {
+      //   alert("A error occured while validating the transfer");
+      // }
+      const OTP = Math.floor(1000 + Math.random() * 9000).toString();
+      console.log("the OTP is", OTP);
+      setRecievedOtp(OTP);
+      await sendOtp(OTP, userDetails.emailAddress);
+    } catch (error) {
+      console.log("A error occured while validating the transfer", error);
+      alert("A error occured while validating the transfer", error);
+    }
+  };
 
   //Calculate the distance
   const calculateDistance = (lat1, lon1, lat2, lon2) => {
+    console.log("Calculating distance");
     const toRadians = (degrees) => degrees * (Math.PI / 180);
 
     const R = 6371; // Radius of the Earth in km
@@ -58,23 +232,27 @@ function TransferPage({ setAlert }) {
         Math.sin(dLon / 2);
 
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    const distance = R * c; // Distance in km
+    const distance = R * c;
+    console.log("The distance is", distance);
 
     return distance;
   };
 
   //Validate 2FA transfer mode
   const securityCheck = async (latitude, longitude) => {
+    console.log("Started Security check");
     try {
       const ninDetails = await axios.get(
         `http://localhost:3030/nin/get-nin/${userDetails.nin}`
       );
-      if (ninDetails.code === "SUCCESS") {
+
+      console.log("The NIN details are", ninDetails);
+      if (ninDetails.data.code === "NIN_FOUND") {
         const distance = calculateDistance(
           latitude,
           longitude,
-          ninDetails.data.latitude,
-          ninDetails.data.longitude
+          ninDetails.data.data.latitude,
+          ninDetails.data.data.longitude
         );
         if (distance > 5) {
           triggerTwoFactorAuthentication();
@@ -89,7 +267,11 @@ function TransferPage({ setAlert }) {
 
   // Get actual location
   const getActualLocation = async (latitude, longitude) => {
-    console.log("this have started", latitude, longitude);
+    console.log(
+      "this have started to get the actual location",
+      latitude,
+      longitude
+    );
     const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`;
 
     try {
@@ -105,6 +287,7 @@ function TransferPage({ setAlert }) {
         country: response.data.address.country,
         countryCode: response.data.address.country_code,
       };
+
       console.log("Now the address is", detailLocation);
 
       const payload = {
@@ -121,12 +304,14 @@ function TransferPage({ setAlert }) {
 
       try {
         const verificationResponce = await axios.post(
-          "https://vertex-server-9jyo.onrender.com/v0/api/verify/",
+          "http://localhost:3030/v0/api/verify/",
           payload
         );
         console.log("The responce from the back is", verificationResponce);
 
         if (verificationResponce.data.status === "SUCCESS") {
+          setOtp(["", "", "", ""]);
+          setOtpPopup(false);
           setLoading(false);
           setTransfer({
             beneficiaryAccountNumber: "",
@@ -193,6 +378,7 @@ function TransferPage({ setAlert }) {
   };
 
   const handleSubmit = async () => {
+    console.log("Start first submit");
     setLoading(true);
     if (!isValidPhoneNumber(transfer.beneficiaryAccountNumber)) {
       setTransfer({ ...transfer, beneficiaryAccountNumber: "" });
@@ -211,7 +397,9 @@ function TransferPage({ setAlert }) {
       navigator.geolocation.getCurrentPosition(
         async (position) => {
           const { latitude, longitude } = position.coords;
-          await getActualLocation(latitude, longitude);
+          setActualLatitude(latitude);
+          setActualLongitude(longitude);
+          await securityCheck(latitude, longitude);
         },
         (err) => {
           setError(err.message);
@@ -234,7 +422,7 @@ function TransferPage({ setAlert }) {
     console.log("this is the beginnign of the beneficairy name logic starting");
     try {
       const beneficiaryName = await axios.post(
-        "https://vertex-server-9jyo.onrender.com/v0/api/get/beneficiary-name",
+        "http://localhost:3030/v0/api/get/beneficiary-name",
         { beneficiaryAccountNumber: accountNumber }
       );
 
@@ -393,6 +581,34 @@ function TransferPage({ setAlert }) {
         </div>
         <Footer />
       </Holder>
+      <TwoFactorAuth>
+        <Holder2FA ref={otpRef}>
+          <img src={lock} alt="padlock otp image" />
+          <p className="head">
+            We noticed that your current location does not match your registered
+            residential location. For your security, please enter the One-Time
+            Password (OTP) sent to your registered phone number or email address
+            to complete this transaction.
+          </p>
+          <InputContainer>
+            {otp.map((_, index) => (
+              <OTPBox
+                key={index}
+                maxLength={1}
+                value={otp[index]}
+                onChange={(e) => handleChange(e.target.value, index)}
+                onKeyDown={(e) => handleKeyDown(e, index)}
+                ref={(el) => (inputRefs.current[index] = el)}
+              />
+            ))}
+          </InputContainer>
+          {loading ? (
+            <l-orbit size="31" speed="1.5" color="black"></l-orbit>
+          ) : (
+            <Button onClick={() => handleOtpSubmit()}>Transfer</Button>
+          )}
+        </Holder2FA>
+      </TwoFactorAuth>
     </Wrapper>
   );
 }
@@ -566,4 +782,86 @@ const ImageHolder = styled.div`
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   }
 `;
+
+const TwoFactorAuth = styled.div`
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  background-color: none;
+  height: 100vh;
+  width: 100vw;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 999;
+`;
+
+const Holder2FA = styled.div`
+  position: absolute;
+  width: 95%;
+  max-width: 400px;
+  height: 500px;
+  background-color: #ffffff;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: var(--medium-br);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: column;
+  padding: 20px;
+  text-align: center;
+  pointer-events: all;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+
+  img {
+    width: 220px;
+  }
+
+  p.head {
+    font-size: 12px;
+    font-family: "Manrope-Bold";
+    color: var(--theme-color);
+    width: 90%;
+  }
+`;
+
+const Button = styled.button`
+  width: 140px;
+  height: 38px;
+  background-color: var(--theme-color);
+  border: solid 1px var(--theme-color);
+  color: white;
+  border-radius: 130px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+
+  &:hover {
+    background-color: white;
+    transition: all 0.2s ease-in-out;
+    color: var(--dark-grey);
+  }
+`;
+
+const InputContainer = styled.div`
+  display: flex;
+  gap: 10px;
+`;
+
+const OTPBox = styled.input`
+  width: 60px;
+  height: 60px;
+  text-align: center;
+  font-size: 24px;
+  border: 2px solid #ccc;
+  background-color: #ffffff;
+  border-radius: 8px;
+  outline: none;
+  transition: border-color 0.3s ease;
+
+  &:focus {
+    border-color: #007bff;
+  }
+`;
+
 export default TransferPage;

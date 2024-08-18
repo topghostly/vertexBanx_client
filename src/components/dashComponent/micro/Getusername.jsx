@@ -17,6 +17,7 @@ function Getusername() {
 
 const Wrapper = styled.h3`
   position: relative;
+  text-transform: capitalize;
 `;
 
 export default Getusername;

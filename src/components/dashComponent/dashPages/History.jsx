@@ -10,7 +10,7 @@ function History() {
   const navigate = useNavigate();
 
   const [transactionDetails, setTransactionDetails] = useState({
-    detailStatus: true,
+    detailStatus: false,
     amount: "",
     name: "",
     narration: "",
