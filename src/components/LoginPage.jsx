@@ -4,8 +4,6 @@ import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Cookies from "js-cookie";
-import { Link } from "react-router-dom";
-import flag from "/images/flag.png";
 
 import { orbit } from "ldrs";
 
@@ -130,6 +128,9 @@ function LoginPage({ setAlert, setSliderPosition }) {
         duration: 0.2,
       }}
     >
+      {/* <LinktoNIN to={"/get-nin"}>
+        Get your NIN <img src={flag} alt="nigeria flag" />
+      </LinktoNIN> */}
       <HeadText>
         <h3 className="big">Welcome</h3>
         <h3 className="big">back</h3>
@@ -222,9 +223,6 @@ function LoginPage({ setAlert, setSliderPosition }) {
           </SvgHolder>
         </div>
       </Oauth>
-      <LinktoNIN to={"/get-nin"}>
-        Get your NIN <img src={flag} alt="nigeria flag" />
-      </LinktoNIN>
     </Wrapper>
   );
 }
@@ -371,22 +369,41 @@ const LineWord = styled.div`
   }
 `;
 
-const LinktoNIN = styled(Link)`
-  margin-top: 25px;
-  color: green;
-  font-family: "Manrope-Bold";
-  font-size: 13px;
-  display: flex;
-  justify-content: center;
-  gap: 5px;
-  width: 120px;
-  height: 40px;
-  align-items: center;
+// const LinktoNIN = styled(Link)`
+//   position: absolute;
+//   right: 20px;
+//   margin-top: 25px;
+//   color: green;
+//   font-family: "Manrope-Bold";
+//   font-size: 13px;
+//   display: none;
+//   justify-content: center;
+//   gap: 5px;
+//   width: 150px;
+//   height: 40px;
+//   align-items: center;
+//   background-color: white;
+//   border-radius: 120px;
+//   transition: all 0.15s ease-in-out;
 
-  img {
-    width: 15px;
-    height: 15px;
-    align-self: center;
-  }
-`;
+//   @media screen and (max-width: 590px) {
+//     position: relative;
+//     display: flex;
+//     margin: 0px auto;
+//     margin-bottom: 10px;
+//     transform: translateX(20px);
+//   }
+
+//   &:hover {
+//     box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+//     transition: all 0.15s ease-in-out;
+//   }
+
+//   img {
+//     width: 15px;
+//     height: 15px;
+//     align-self: center;
+//   }
+// `;
+
 export default LoginPage;

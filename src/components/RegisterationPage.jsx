@@ -3,6 +3,8 @@ import styled from "styled-components";
 import { Outlet } from "react-router-dom";
 import ProgressBar from "./registerationComponent/ProgressBar";
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
+import flag from "/images/flag.png";
 
 function RegisterationPage({
   lightUp,
@@ -28,6 +30,9 @@ function RegisterationPage({
         duration: 0.2,
       }}
     >
+      <LinktoNIN to={"/get-nin"}>
+        Get your NIN <img src={flag} alt="nigeria flag" />
+      </LinktoNIN>
       <HeadText>
         <h3 className="big">Create</h3>
         <h3 className="big">account</h3>
@@ -129,6 +134,43 @@ const DropDownForm = styled.div`
     border-radius: 5px;
     border: solid 1px var(--dark-grey);
     outline: none;
+  }
+`;
+
+const LinktoNIN = styled(Link)`
+  position: absolute;
+  right: 20px;
+  margin-top: 25px;
+  color: green;
+  font-family: "Manrope-Bold";
+  font-size: 13px;
+  display: none;
+  justify-content: center;
+  gap: 5px;
+  width: 150px;
+  height: 40px;
+  align-items: center;
+  background-color: white;
+  border-radius: 120px;
+  transition: all 0.15s ease-in-out;
+
+  @media screen and (max-width: 590px) {
+    position: relative;
+    display: flex;
+    margin: 0px auto;
+    /* margin-bottom: 10px; */
+    transform: translateX(20px);
+  }
+
+  &:hover {
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    transition: all 0.15s ease-in-out;
+  }
+
+  img {
+    width: 15px;
+    height: 15px;
+    align-self: center;
   }
 `;
 

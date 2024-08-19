@@ -3,6 +3,7 @@ import backgroundimage from "/images/ninbackground.jpg";
 import logo from "/images/ninlogo.png";
 import styled from "styled-components";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 function GetNIN() {
   const [ninDetails, setNinDetails] = useState({
@@ -18,6 +19,7 @@ function GetNIN() {
     email: "",
   });
 
+  const navigate = useNavigate();
   const [formError, setFormError] = useState("");
   const [loading, setLoading] = useState("");
 
@@ -107,7 +109,9 @@ function GetNIN() {
 
       if (response.data.status === "SUCCESS") {
         setLoading(false);
-        alert(`NIN registered successfully, NIN: ${response.data.data.nin}`);
+        alert(
+          `NIN registered successfully, NIN: ${response.data.data.nin}, Please copy.`
+        );
         setNinDetails({
           firstName: "",
           lastName: "",
@@ -120,6 +124,7 @@ function GetNIN() {
           phoneNumber: "",
           email: "",
         });
+        navigate("/auth/create-acct/personal-details");
       } else if (response.data.code === "EXISTING_NIN") {
         setLoading(false);
         alert("The User already exist");
