@@ -22,8 +22,6 @@ function TransferPage({ setAlert }) {
   const inputRefs = useRef([]);
   const otpRef = useRef([]);
 
-  const [otp, setOtp] = useState(["", "", "", ""]);
-  const { userDistance, setUserDistance } = useState(0);
   const [beneficiaryName, setBeneficiaryName] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -51,134 +49,8 @@ function TransferPage({ setAlert }) {
 
   orbit.register();
 
-  //OTP boxes logic
-  const handleChange = (value, index) => {
-    if (!/^[0-9]$/.test(value)) return; // Allow only numerical values
-
-    const newOtp = [...otp];
-    newOtp[index] = value;
-    setOtp(newOtp);
-
-    // Move to the next input box if a value is entered
-    if (value !== "" && index < 3) {
-      inputRefs.current[index + 1].focus();
-    }
-  };
-
-  const handleKeyDown = (e, index) => {
-    if (e.key === "Backspace") {
-      if (otp[index] === "" && index > 0) {
-        // Move to the previous input box on backspace if the current box is empty
-        inputRefs.current[index - 1].focus();
-      } else {
-        // Clear the current input value on backspace
-        const newOtp = [...otp];
-        newOtp[index] = "";
-        setOtp(newOtp);
-      }
-    }
-  };
-
-  const handleOtpSubmit = async () => {
-    console.log("Otp inoutted");
-    const otpValue = otp.join("");
-
-    if (recievedOtp === otpValue) {
-      setLoading(true);
-      setOtpPopup(false);
-      await getActualLocation(actuallatitude, actuallongitude);
-    } else {
-      alert("Invalid One Time Password");
-    }
-  };
-
-  // Otp pop up logic and animatiom
-  useEffect(() => {
-    if (!otpPopup) {
-      const tl1 = gsap.timeline();
-      tl1.to(otpRef.current, {
-        top: "200%",
-        duration: 0.6,
-        ease: "power3.in",
-      });
-    }
-
-    if (otpPopup) {
-      gsap.fromTo(
-        otpRef.current,
-        {
-          top: "200%",
-        },
-        {
-          top: "50%",
-          duration: 0.6,
-          ease: "power3.out",
-          delay: 0.3,
-        }
-      );
-    }
-  }, [otpPopup]);
-
-  // Logic for the expiration time
-  const generateExpTime = () => {
-    try {
-      const currentTime = new Date();
-      const expTime = new Date(currentTime.getTime() + 4 * 60000);
-
-      const hr = String(expTime.getHours()).padStart(2, "0");
-      const mint = String(expTime.getMinutes()).padStart(2, "0");
-
-      const formattedExpTime = `${hr}:${mint}`;
-
-      return formattedExpTime;
-    } catch (error) {
-      console.log(error);
-      return "5 minutes";
-    }
-  };
-
-  // Send otp to emall
-  const sendOtp = async (otp, userMail) => {
-    console.log("Started sending mail");
-    const templateParams = {
-      to_email: userMail,
-      otp,
-      expTime: generateExpTime(),
-    };
-
-    emailjs
-      .send(
-        "service_atc86bv",
-        "template_90jyytl",
-        templateParams,
-        "JjaRLIhcF0urdjSfX"
-      )
-      .then(
-        (response) => {
-          console.log("SUCCESS!", response.status, response.text);
-          setOtpPopup(true);
-          setLoading(false);
-        },
-        (error) => {
-          console.error("FAILED...", error);
-          alert("An unexpected error occured");
-        }
-      );
-  };
-
   // 2FA Logic
-  const triggerTwoFactorAuthentication = async () => {
-    console.log("Started 2FA");
-    try {
-      const OTP = Math.floor(1000 + Math.random() * 9000).toString();
-      console.log("the OTP is", OTP);
-      setRecievedOtp(OTP);
-      await sendOtp(OTP, userDetails.emailAddress);
-    } catch (error) {
-      console.log("A error occured while validating the transfer", error);
-      alert("A error occured while validating the transfer", error);
-    }
-  };
+  const triggerTwoFactorAuthentication = () => {};
 
   //Calculate the distance
   const calculateDistance = (lat1, lon1, lat2, lon2) => {
@@ -196,9 +68,7 @@ function TransferPage({ setAlert }) {
         Math.sin(dLon / 2);
 
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    const distance = R * c;
-    console.log("The distance is", distance);
-    setUserDistance(distance);
+    const distance = R * c; // Distance in km
 
     return distance;
   };
@@ -747,86 +617,4 @@ const ImageHolder = styled.div`
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   }
 `;
-
-const TwoFactorAuth = styled.div`
-  position: fixed;
-  top: 0px;
-  left: 0px;
-  background-color: none;
-  height: 100vh;
-  width: 100vw;
-  pointer-events: none;
-  overflow: hidden;
-  z-index: 999;
-`;
-
-const Holder2FA = styled.div`
-  position: absolute;
-  width: 95%;
-  max-width: 400px;
-  height: 500px;
-  background-color: #ffffff;
-  top: 200%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  border-radius: var(--medium-br);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-direction: column;
-  padding: 20px;
-  text-align: center;
-  pointer-events: all;
-  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
-
-  img {
-    width: 220px;
-  }
-
-  p.head {
-    font-size: 12px;
-    font-family: "Manrope-Bold";
-    color: var(--theme-color);
-    width: 90%;
-  }
-`;
-
-const Button = styled.button`
-  width: 140px;
-  height: 38px;
-  background-color: var(--theme-color);
-  border: solid 1px var(--theme-color);
-  color: white;
-  border-radius: 130px;
-  cursor: pointer;
-  transition: all 0.2s ease-in-out;
-
-  &:hover {
-    background-color: white;
-    transition: all 0.2s ease-in-out;
-    color: var(--dark-grey);
-  }
-`;
-
-const InputContainer = styled.div`
-  display: flex;
-  gap: 10px;
-`;
-
-const OTPBox = styled.input`
-  width: 60px;
-  height: 60px;
-  text-align: center;
-  font-size: 24px;
-  border: 2px solid #ccc;
-  background-color: #ffffff;
-  border-radius: 8px;
-  outline: none;
-  transition: border-color 0.3s ease;
-
-  &:focus {
-    border-color: #007bff;
-  }
-`;
-
 export default TransferPage;

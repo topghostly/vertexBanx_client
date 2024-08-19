@@ -289,10 +289,17 @@ const RefreshDatabase = ({ setRefreshDetails, setBalLoad }) => {
               // }
               // await sendOtp(recievedOtp, userDetails.emailAddress);
 
+<<<<<<< HEAD
               // let beneficiaryLocation = await getActualLocation(
               //   latitude,
               //   longitude
               // );
+=======
+              const response = await axios.post(
+                `http://localhost:3030/v0/api/verify/delete/${verificationID}`,
+                { beneficiaryLocation }
+              );
+>>>>>>> ecb7d49f16c8e163783ebe67f50166fcbb4d5acc
 
               // const response = await axios.post(
               //   `http://localhost:3030/v0/api/verify/delete/${verificationID}`,
