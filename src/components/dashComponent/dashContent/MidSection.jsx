@@ -1,7 +1,7 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import styled from "styled-components";
 import AcctBalance from "./AcctBalance";
-import SavingBalance from "./SavingBalance";
+// import SavingBalance from "./SavingBalance";
 import ActivityBar from "./ActivityBar";
 import gsap from "gsap";
 
@@ -12,6 +12,8 @@ function MidSection({ setRefreshDetails, refreshDetails, loading, balLoad }) {
   const animationRef = useRef(null);
   const animationRef1 = useRef(null);
   const animationRef2 = useRef(null);
+
+  const [pendingTransaction, setPendingTransaction] = useState(false);
   useEffect(() => {
     if (loading) {
       gsap.fromTo(
@@ -67,10 +69,15 @@ function MidSection({ setRefreshDetails, refreshDetails, loading, balLoad }) {
             loading={loading}
             balLoad={balLoad}
           />
-          <SavingBalance />
+          {/* <SavingBalance /> */}
         </div>
         <Recent>
           <div className="head">
+            <p className="pending">
+              {pendingTransaction
+                ? "You have a pending Transaction, refresh for verification"
+                : ""}
+            </p>
             <ViewAllLink className="heading" to={"/u/overview/statement"}>
               View all
             </ViewAllLink>
@@ -85,6 +92,7 @@ function MidSection({ setRefreshDetails, refreshDetails, loading, balLoad }) {
             <GetHistory
               refreshDetails={refreshDetails}
               setRefreshDetails={setRefreshDetails}
+              setPendingTransaction={setPendingTransaction}
             />
           )}
         </Recent>
@@ -169,11 +177,17 @@ const Recent = styled.div`
     width: 100%;
     height: 30px;
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
     width: 100%;
 
     @media screen and (max-width: 560px) {
       padding-right: 20px;
+    }
+
+    .pending {
+      font-size: 10px;
+      font-family: "Manrope-Bold";
+      color: red;
     }
   }
 

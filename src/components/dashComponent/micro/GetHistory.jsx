@@ -2,7 +2,11 @@ import React, { useState, useEffect } from "react";
 import Tab from "./Tab";
 import styled from "styled-components";
 
-function GetHistory({ refreshDetails, setRefreshDetails }) {
+function GetHistory({
+  refreshDetails,
+  setRefreshDetails,
+  setPendingTransaction,
+}) {
   const [userHistory, setUserHistory] = useState(() => {
     const savedUserDetails = localStorage.getItem("userDetails");
     const user = JSON.parse(savedUserDetails);
@@ -28,6 +32,7 @@ function GetHistory({ refreshDetails, setRefreshDetails }) {
     }
     console.log("the detaills as been refreshed");
     setRefreshDetails(false);
+    setPendingTransaction(false);
   }, [refreshDetails]);
 
   const recent = userHistory.slice(-3);
@@ -55,6 +60,14 @@ function GetHistory({ refreshDetails, setRefreshDetails }) {
           ) {
             type = "credit";
             theName = `${recentTransaction.senderName.firstName} ${recentTransaction.senderName.lastName}`;
+          }
+
+          if (
+            recentTransaction.transactionStatus === "Pending" &&
+            userDetails.AccountNumber ===
+              recentTransaction.beneficiaryAccountNumber
+          ) {
+            setPendingTransaction(true);
           }
           return (
             <Tab

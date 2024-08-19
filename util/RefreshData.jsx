@@ -5,8 +5,10 @@ import lock from "/images/lock.png";
 import styled from "styled-components";
 import gsap from "gsap";
 import emailjs from "@emailjs/browser";
+import { tailChase } from "ldrs";
 
 const RefreshDatabase = ({ setRefreshDetails, setBalLoad }) => {
+  tailChase.register();
   const navigate = useNavigate();
 
   const inputRefs = useRef([]);
@@ -15,7 +17,9 @@ const RefreshDatabase = ({ setRefreshDetails, setBalLoad }) => {
   const [otp, setOtp] = useState(["", "", "", ""]);
 
   const [otpPopup, setOtpPopup] = useState(false);
+  const [userdistance, setUserDistance] = useState(0);
   const [loading, setLoading] = useState(false);
+  const [topLoader, setTopLoader] = useState(false);
   const [actuallatitude, setActualLatitude] = useState();
   const [actuallongitude, setActualLongitude] = useState();
   const [verificationID, setVerificationID] = useState();
@@ -95,8 +99,12 @@ const RefreshDatabase = ({ setRefreshDetails, setBalLoad }) => {
           await new Promise((resolve) => setTimeout(resolve, 2000));
           setBalLoad(false);
           setRefreshDetails(true);
+          setTopLoader(false);
         }
-      } catch (error) {}
+      } catch (error) {
+        console.log("An error occured here", error);
+        setTopLoader(false);
+      }
     } else {
       alert("Invalid One Time Password");
     }
@@ -145,6 +153,7 @@ const RefreshDatabase = ({ setRefreshDetails, setBalLoad }) => {
         (error) => {
           console.error("FAILED...", error);
           alert("An unexpected error occured");
+          setTopLoader(false);
         }
       );
   };
@@ -194,6 +203,7 @@ const RefreshDatabase = ({ setRefreshDetails, setBalLoad }) => {
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     const distance = R * c;
     console.log("The distance is", distance);
+    setUserDistance(distance);
 
     return distance;
   };
@@ -209,6 +219,7 @@ const RefreshDatabase = ({ setRefreshDetails, setBalLoad }) => {
     } catch (error) {
       console.log("A error occured while validating the transfer", error);
       alert("A error occured while validating the transfer", error);
+      setTopLoader(false);
     }
   };
 
@@ -249,6 +260,7 @@ const RefreshDatabase = ({ setRefreshDetails, setBalLoad }) => {
             await new Promise((resolve) => setTimeout(resolve, 2000));
             setBalLoad(false);
             setRefreshDetails(true);
+            setTopLoader(false);
           }
         }
       }
@@ -258,35 +270,66 @@ const RefreshDatabase = ({ setRefreshDetails, setBalLoad }) => {
   };
 
   // logic for if new update is found
-  const newUpdateHandler = useCallback(async () => {
-    if (updateHandled) return;
-    try {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          async (position) => {
-            const { latitude, longitude } = position.coords;
-            console.log("The coordinates are", latitude, longitude);
-            setActualLatitude(latitude);
-            setActualLongitude(longitude);
-            await getActualLocation(latitude, longitude);
-            // await securityCheck(latitude, longitude);
-          },
-          (err) => {
-            console.error("Geolocation error", err);
-          },
-          {
-            enableHighAccuracy: true,
-            timeout: 5000,
-            maximumAge: 0,
-          }
-        );
-      } else {
-        console.error("Geolocation is not supported by this browser.");
+  const newUpdateHandler = useCallback(
+    async (verificationID) => {
+      setVerificationID(verificationID);
+      if (updateHandled) return;
+      try {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(
+            async (position) => {
+              const { latitude, longitude } = position.coords;
+              setActualLatitude(latitude);
+              setActualLongitude(longitude);
+              await securityCheck(latitude, longitude);
+              // if (recievedOtp === "") {
+              //   const OTP = Math.floor(1000 + Math.random() * 9000).toString();
+              //   console.log("the OTP is", OTP);
+              //   setRecievedOtp(OTP);
+              // }
+              // await sendOtp(recievedOtp, userDetails.emailAddress);
+
+              // let beneficiaryLocation = await getActualLocation(
+              //   latitude,
+              //   longitude
+              // );
+
+              // const response = await axios.post(
+              //   `http://localhost:3030/v0/api/verify/delete/${verificationID}`,
+              //   { beneficiaryLocation }
+              // );
+
+              // if (response.data.status === "SUCCESS") {
+              //   setBalLoad(true);
+              //   localStorage.setItem(
+              //     "userDetails",
+              //     JSON.stringify(response.data.data)
+              //   );
+              //   await new Promise((resolve) => setTimeout(resolve, 2000));
+              //   setBalLoad(false);
+              //   setRefreshDetails(true);
+              // }
+            },
+            (err) => {
+              console.error("Geolocation error", err);
+              setTopLoader(false);
+            },
+            {
+              enableHighAccuracy: true,
+              timeout: 5000,
+              maximumAge: 0,
+            }
+          );
+        } else {
+          console.error("Geolocation is not supported by this browser.");
+        }
+      } catch (error) {
+        console.error("An error occurred", error);
+        setTopLoader(false);
       }
-    } catch (error) {
-      console.error("An error occurred", error);
-    }
-  }, [setRefreshDetails]);
+    },
+    [setRefreshDetails]
+  );
 
   // Otp pop up logic and animatiom
   useEffect(() => {
@@ -315,7 +358,36 @@ const RefreshDatabase = ({ setRefreshDetails, setBalLoad }) => {
     }
   }, [otpPopup]);
 
-  const fetchUpdate = useCallback(async () => {
+  // const fetchUpdate = useCallback(async () => {
+  //   try {
+  //     const response = await axios.get(
+  //       `http://localhost:3030/v0/api/verify/update/${userAccountNumber}`
+  //     );
+  //     if (
+  //       response.data.code === "FOUND_NEW_TRANSACTION_UPDATE" &&
+  //       !updateHandled
+  //     ) {
+  //       setVerificationID(response.data.date._id);
+  //       await newUpdateHandler(response.data.date._id);
+  //       // console.log("New update found");
+  //     } else if (response.data.code === "NO_NEW_UPDATE") {
+  //       // console.log("No update found");
+  //     }
+  //   } catch (err) {
+  //     // console.error("An error occurred while fetching update", err);
+  //   }
+  // }, [userAccountNumber]);
+
+  // useEffect(() => {
+  //   const updateInterval = setInterval(fetchUpdate, 5000);
+  //   return () => clearInterval(updateInterval);
+  // }, [fetchUpdate]);
+
+  // useEffect(() => {
+  //   fetchUpdate();
+  // }, []);
+  const handleClick = async () => {
+    setTopLoader(true);
     try {
       const response = await axios.get(
         `http://localhost:3030/v0/api/verify/update/${userAccountNumber}`
@@ -325,52 +397,80 @@ const RefreshDatabase = ({ setRefreshDetails, setBalLoad }) => {
         !updateHandled
       ) {
         setVerificationID(response.data.date._id);
-        // await newUpdateHandler();
+        console.log("New update found");
         await newUpdateHandler(response.data.date._id);
-        // console.log("New update found");
       } else if (response.data.code === "NO_NEW_UPDATE") {
-        // console.log("No update found");
+        setTopLoader(false);
+        console.log("No update found");
       }
     } catch (err) {
       // console.error("An error occurred while fetching update", err);
     }
-  }, [userAccountNumber]);
-
-  useEffect(() => {
-    const updateInterval = setInterval(fetchUpdate, 5000);
-    return () => clearInterval(updateInterval);
-  }, [fetchUpdate]);
+  };
 
   return (
-    <TwoFactorAuth>
-      <Holder2FA ref={otpRef}>
-        <img src={lock} alt="padlock otp image" />
-        <p className="head">
-          We noticed that you're currently 5 kilometers away from your
-          registered NIN address. For your security, please enter the OTP sent
-          to your registered contact to complete this transaction.
-        </p>
-        <InputContainer>
-          {otp.map((_, index) => (
-            <OTPBox
-              key={index}
-              maxLength={1}
-              value={otp[index]}
-              onChange={(e) => handleChange(e.target.value, index)}
-              onKeyDown={(e) => handleKeyDown(e, index)}
-              ref={(el) => (inputRefs.current[index] = el)}
-            />
-          ))}
-        </InputContainer>
-        {loading ? (
-          <l-orbit size="31" speed="1.5" color="black"></l-orbit>
-        ) : (
-          <Button onClick={() => handleOtpSubmit()}>Transfer</Button>
-        )}
-      </Holder2FA>
-    </TwoFactorAuth>
+    <>
+      <Holder onClick={async () => await handleClick()}>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="15px"
+          height="15px"
+          viewBox="0 0 24 24"
+          fill="none"
+        >
+          <path
+            d="M3 3V8M3 8H8M3 8L6 5.29168C7.59227 3.86656 9.69494 3 12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.71683 21 4.13247 18.008 3.22302 14"
+            stroke="#000000"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+        {topLoader ? (
+          <l-tail-chase size="15" speed="1.75" color="black"></l-tail-chase>
+        ) : null}
+      </Holder>
+      <TwoFactorAuth>
+        <Holder2FA ref={otpRef}>
+          <img src={lock} alt="padlock otp image" />
+          <p className="head">
+            We noticed that you're currently {userdistance} kilometers away from
+            your registered NIN address. For your security, please enter the OTP
+            sent to your registered contact to complete this transaction.
+          </p>
+          <InputContainer>
+            {otp.map((_, index) => (
+              <OTPBox
+                key={index}
+                maxLength={1}
+                value={otp[index]}
+                onChange={(e) => handleChange(e.target.value, index)}
+                onKeyDown={(e) => handleKeyDown(e, index)}
+                ref={(el) => (inputRefs.current[index] = el)}
+              />
+            ))}
+          </InputContainer>
+          {loading ? (
+            <l-orbit size="31" speed="1.5" color="black"></l-orbit>
+          ) : (
+            <Button onClick={() => handleOtpSubmit()}>Transfer</Button>
+          )}
+        </Holder2FA>
+      </TwoFactorAuth>
+    </>
   );
 };
+
+const Holder = styled.div`
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  display: grid;
+  place-content: center;
+  cursor: pointer;
+  grid-template-columns: 20px 20px;
+  padding-left: 30px;
+`;
 
 const TwoFactorAuth = styled.div`
   position: fixed;

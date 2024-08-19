@@ -240,7 +240,7 @@ const BackDrop = styled.div`
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: #27272729;
+  background-color: #27272729;  
   z-index: 88;
   backdrop-filter: blur(1px);
   pointer-events: none;

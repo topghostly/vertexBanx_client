@@ -133,32 +133,7 @@ function TopSection({ loading, openSideNav, setOpenSideNav }) {
             <p>Nigerian Naira</p>
           </div>
         </div>
-        <div className="right-mobile" onClick={handleSideNav}>
-          {/* <div
-            className="logout-mobile"
-            onClick={() => {
-              Cookies.remove("sessionToken");
-              localStorage.removeItem("userDetails");
-              navigate("/auth/login");
-            }}
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="22px"
-              height="22px"
-              viewBox="0 0 24 24"
-              fill="none"
-            >
-              <path
-                d="M14 4L17.5 4C20.5577 4 20.5 8 20.5 12C20.5 16 20.5577 20 17.5 20H14M3 12L15 12M3 12L7 8M3 12L7 16"
-                stroke="var(--dark-grey)"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          </div> */}
-        </div>
+        <div className="right-mobile" onClick={handleSideNav}></div>
         <div className="right">
           <div
             className="logout"
@@ -277,6 +252,7 @@ function TopSection({ loading, openSideNav, setOpenSideNav }) {
 const Wrapper = styled.section`
   position: relative;
   max-width: 100vw;
+  margin-top: 15px;
 
   @media screen and (max-width: 540px) {
     margin-bottom: 20px;

@@ -66,12 +66,13 @@ function Homepage({ alert, setAlert }) {
             setBalLoad={setBalLoad}
           />
         )}
+
+        <TopSection loading={loading} />
         <VerifySession
           setAlert={setAlert}
           setLoading={setLoading}
           setBalLoad={setBalLoad}
         />
-        <TopSection loading={loading} />
         <MidSection
           refreshDetails={refreshDetails}
           setRefreshDetails={setRefreshDetails}
@@ -117,7 +118,7 @@ const Holder = styled.div`
   width: auto;
 
   @media screen and (max-width: 540px) {
-    grid-template-rows: 110px 1fr;
+    grid-template-rows: 130px 1fr;
   }
 `;
 

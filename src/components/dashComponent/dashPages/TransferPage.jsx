@@ -23,6 +23,7 @@ function TransferPage({ setAlert }) {
   const otpRef = useRef([]);
 
   const [otp, setOtp] = useState(["", "", "", ""]);
+  const { userDistance, setUserDistance } = useState(0);
   const [beneficiaryName, setBeneficiaryName] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -197,6 +198,7 @@ function TransferPage({ setAlert }) {
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     const distance = R * c;
     console.log("The distance is", distance);
+    setUserDistance(distance);
 
     return distance;
   };

@@ -7,6 +7,7 @@ import axios from "axios";
 function Admin() {
   const [transactionID, setTransactionID] = useState("");
   const [details, setDetails] = useState();
+  const [localDate, setLocalDate] = useState();
 
   const getDetails = async (id) => {
     setDetails();
@@ -23,6 +24,14 @@ function Admin() {
       );
     }
   };
+  useEffect(() => {
+    if (details) {
+      const date = new Date(details.createdAt);
+
+      const theDtae = date.toLocaleString();
+      setLocalDate(theDtae)
+    }
+  });
   return (
     <Wrapper>
       <Holder>
@@ -75,7 +84,7 @@ function Admin() {
                   </span>
                 </Detail>
                 <Detail>
-                  Time: <span className="bold">{details.createdAt}</span>
+                  Time: <span className="bold">{localDate}</span>
                 </Detail>
                 <Detail>
                   Narration: <span className="bold">{details.narration}</span>
