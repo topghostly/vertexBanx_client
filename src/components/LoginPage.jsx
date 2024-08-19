@@ -4,6 +4,8 @@ import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Cookies from "js-cookie";
+import { Link } from "react-router-dom";
+import flag from "/images/flag.png";
 
 import { orbit } from "ldrs";
 
@@ -220,6 +222,9 @@ function LoginPage({ setAlert, setSliderPosition }) {
           </SvgHolder>
         </div>
       </Oauth>
+      <LinktoNIN to={"/get-nin"}>
+        Get your NIN <img src={flag} alt="nigeria flag" />
+      </LinktoNIN>
     </Wrapper>
   );
 }
@@ -363,6 +368,25 @@ const LineWord = styled.div`
     width: 70px;
     height: 2px;
     background-color: var(--medium-grey);
+  }
+`;
+
+const LinktoNIN = styled(Link)`
+  margin-top: 25px;
+  color: green;
+  font-family: "Manrope-Bold";
+  font-size: 13px;
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+  width: 120px;
+  height: 40px;
+  align-items: center;
+
+  img {
+    width: 15px;
+    height: 15px;
+    align-self: center;
   }
 `;
 export default LoginPage;
