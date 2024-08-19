@@ -76,7 +76,7 @@ function LoginPage({ setAlert, setSliderPosition }) {
 
     try {
       const response = await axios.post(
-        "http://localhost:3030/v0/api/auth/login",
+        "https://vertex-server-9jyo.onrender.com/v0/api/auth/login",
         loginDetails
       );
       console.log(response);

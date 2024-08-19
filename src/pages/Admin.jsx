@@ -13,7 +13,7 @@ function Admin() {
     setDetails();
     try {
       const transactionDetails = await axios.get(
-        `http://localhost:3030/v0/api/verify/get-transfer/${id}`
+        `https://vertex-server-9jyo.onrender.com/v0/api/verify/get-transfer/${id}`
       );
       setDetails(transactionDetails.data.date);
       console.log("The detaisl state is", details);
@@ -29,7 +29,7 @@ function Admin() {
       const date = new Date(details.createdAt);
 
       const theDtae = date.toLocaleString();
-      setLocalDate(theDtae)
+      setLocalDate(theDtae);
     }
   });
   return (

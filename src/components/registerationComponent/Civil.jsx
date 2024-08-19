@@ -70,7 +70,7 @@ function Civil({ setLightUp, setregisterationDetails, registerationDetails }) {
     console.log("Started verifing NIN");
     try {
       const ninDetails = await axios.get(
-        `http://localhost:3030/nin/get-nin/${nin}`
+        `https://vertex-server-9jyo.onrender.com/nin/get-nin/${nin}`
       );
       console.log("The NIN details", ninDetails);
 

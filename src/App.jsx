@@ -63,7 +63,7 @@ function App() {
     console.log("The registration details:", registerationDetails);
     try {
       const responce = await axios.post(
-        "http://localhost:3030/v0/api/auth/register",
+        "https://vertex-server-9jyo.onrender.com/v0/api/auth/register",
         registerationDetails
       );
       if (responce.data.status === "SUCCESS") {
@@ -240,7 +240,7 @@ const BackDrop = styled.div`
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: #27272729;  
+  background-color: #27272729;
   z-index: 88;
   backdrop-filter: blur(1px);
   pointer-events: none;

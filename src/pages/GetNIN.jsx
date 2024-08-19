@@ -101,7 +101,7 @@ function GetNIN() {
 
     try {
       const response = await axios.post(
-        "http://localhost:3030/nin/register-nin",
+        "https://vertex-server-9jyo.onrender.com/nin/register-nin",
         payload
       );
 

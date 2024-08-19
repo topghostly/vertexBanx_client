@@ -32,7 +32,7 @@ function GetHistory({
     }
     console.log("the detaills as been refreshed");
     setRefreshDetails(false);
-    setPendingTransaction(false);
+    // setPendingTransaction(false);
   }, [refreshDetails]);
 
   const recent = userHistory.slice(-3);

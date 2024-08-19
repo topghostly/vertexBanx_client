@@ -23,7 +23,6 @@ function TransferPage({ setAlert }) {
   const otpRef = useRef([]);
 
   const [otp, setOtp] = useState(["", "", "", ""]);
-  const { userDistance, setUserDistance } = useState(0);
   const [beneficiaryName, setBeneficiaryName] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -171,7 +170,7 @@ function TransferPage({ setAlert }) {
     console.log("Started 2FA");
     try {
       const OTP = Math.floor(1000 + Math.random() * 9000).toString();
-      console.log("the OTP is", OTP);
+      // console.log("the OTP is", OTP);
       setRecievedOtp(OTP);
       await sendOtp(OTP, userDetails.emailAddress);
     } catch (error) {
@@ -198,7 +197,6 @@ function TransferPage({ setAlert }) {
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     const distance = R * c;
     console.log("The distance is", distance);
-    setUserDistance(distance);
 
     return distance;
   };
@@ -208,7 +206,7 @@ function TransferPage({ setAlert }) {
     console.log("Started Security check");
     try {
       const ninDetails = await axios.get(
-        `http://localhost:3030/nin/get-nin/${userDetails.nin}`
+        `https://vertex-server-9jyo.onrender.com/nin/get-nin/${userDetails.nin}`
       );
 
       console.log("The NIN details are", ninDetails);
@@ -226,7 +224,19 @@ function TransferPage({ setAlert }) {
         }
       }
     } catch (error) {
-      console.error("An error occured while getting NIN details");
+      setLoading(false);
+      console.error("An error occured while getting NIN details", error);
+      setTransfer({
+        beneficiaryAccountNumber: "",
+        amount: "",
+        narration: "",
+      });
+      setBeneficiaryName("");
+      setAlert({
+        alertState: true,
+        alertType: "Failed",
+        alertDetails: "An unexpected error occured",
+      });
     }
   };
 
@@ -269,7 +279,7 @@ function TransferPage({ setAlert }) {
 
       try {
         const verificationResponce = await axios.post(
-          "http://localhost:3030/v0/api/verify/",
+          "https://vertex-server-9jyo.onrender.com/v0/api/verify/",
           payload
         );
         console.log("The responce from the back is", verificationResponce);
@@ -387,7 +397,7 @@ function TransferPage({ setAlert }) {
     console.log("this is the beginnign of the beneficairy name logic starting");
     try {
       const beneficiaryName = await axios.post(
-        "http://localhost:3030/v0/api/get/beneficiary-name",
+        "https://vertex-server-9jyo.onrender.com/v0/api/get/beneficiary-name",
         { beneficiaryAccountNumber: accountNumber }
       );
 

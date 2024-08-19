@@ -86,7 +86,7 @@ const RefreshDatabase = ({ setRefreshDetails, setBalLoad }) => {
         );
 
         const response = await axios.post(
-          `http://localhost:3030/v0/api/verify/delete/${verificationID}`,
+          `https://vertex-server-9jyo.onrender.com/v0/api/verify/delete/${verificationID}`,
           { beneficiaryLocation }
         );
 
@@ -213,7 +213,7 @@ const RefreshDatabase = ({ setRefreshDetails, setBalLoad }) => {
     console.log("Started 2FA");
     try {
       const OTP = Math.floor(1000 + Math.random() * 9000).toString();
-      console.log("the OTP is", OTP);
+      // console.log("the OTP is", OTP);
       setRecievedOtp(OTP);
       await sendOtp(OTP, userDetails.emailAddress);
     } catch (error) {
@@ -227,7 +227,7 @@ const RefreshDatabase = ({ setRefreshDetails, setBalLoad }) => {
   const securityCheck = async (latitude, longitude) => {
     try {
       const ninDetails = await axios.get(
-        `http://localhost:3030/nin/get-nin/${userDetails.nin}`
+        `https://vertex-server-9jyo.onrender.com/nin/get-nin/${userDetails.nin}`
       );
 
       console.log("The NIN details are", ninDetails);
@@ -247,7 +247,7 @@ const RefreshDatabase = ({ setRefreshDetails, setBalLoad }) => {
           );
 
           const response = await axios.post(
-            `http://localhost:3030/v0/api/verify/delete/${verificationID}`,
+            `https://vertex-server-9jyo.onrender.com/v0/api/verify/delete/${verificationID}`,
             { beneficiaryLocation }
           );
 
@@ -295,7 +295,7 @@ const RefreshDatabase = ({ setRefreshDetails, setBalLoad }) => {
               // );
 
               // const response = await axios.post(
-              //   `http://localhost:3030/v0/api/verify/delete/${verificationID}`,
+              //   `https://vertex-server-9jyo.onrender.com/v0/api/verify/delete/${verificationID}`,
               //   { beneficiaryLocation }
               // );
 
@@ -361,7 +361,7 @@ const RefreshDatabase = ({ setRefreshDetails, setBalLoad }) => {
   // const fetchUpdate = useCallback(async () => {
   //   try {
   //     const response = await axios.get(
-  //       `http://localhost:3030/v0/api/verify/update/${userAccountNumber}`
+  //       `https://vertex-server-9jyo.onrender.com/v0/api/verify/update/${userAccountNumber}`
   //     );
   //     if (
   //       response.data.code === "FOUND_NEW_TRANSACTION_UPDATE" &&
@@ -390,7 +390,7 @@ const RefreshDatabase = ({ setRefreshDetails, setBalLoad }) => {
     setTopLoader(true);
     try {
       const response = await axios.get(
-        `http://localhost:3030/v0/api/verify/update/${userAccountNumber}`
+        `https://vertex-server-9jyo.onrender.com/v0/api/verify/update/${userAccountNumber}`
       );
       if (
         response.data.code === "FOUND_NEW_TRANSACTION_UPDATE" &&
