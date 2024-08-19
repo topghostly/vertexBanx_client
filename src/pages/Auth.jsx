@@ -2,9 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { motion } from "framer-motion";
 import AuthTopBar from "../components/AuthTopBar";
-import { Link } from "react-router-dom";
 import background from "/images/authback.png";
-import flag from "/images/flag.png";
 
 // Media Import
 import logo from "/images/VERTEX-04.png";
@@ -25,11 +23,7 @@ function Login({ sliderPosition, setSliderPosition }) {
           <Outlet />
         </FormSection>
       </SectionWrapper>
-      <ImageWrapper background={background}>
-        <LinktoNIN to={"/get-nin"}>
-          Get your NIN <img src={flag} alt="nigeria flag" />
-        </LinktoNIN>
-      </ImageWrapper>
+      <ImageWrapper background={background}></ImageWrapper>
     </Wrapper>
   );
 }
@@ -100,36 +94,4 @@ const ImageWrapper = styled.div`
   }
 `;
 
-const LinktoNIN = styled(Link)`
-  position: absolute;
-  right: 20px;
-  margin-top: 25px;
-  color: green;
-  font-family: "Manrope-Bold";
-  font-size: 13px;
-  display: flex;
-  justify-content: center;
-  gap: 5px;
-  width: 150px;
-  height: 40px;
-  align-items: center;
-  background-color: white;
-  border-radius: 120px;
-  transition: all 0.15s ease-in-out;
-
-  @media screen and (max-width: 590px) {
-    display: none;
-  }
-
-  &:hover {
-    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
-    transition: all 0.15s ease-in-out;
-  }
-
-  img {
-    width: 15px;
-    height: 15px;
-    align-self: center;
-  }
-`;
 export default Login;

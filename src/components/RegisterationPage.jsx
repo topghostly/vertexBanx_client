@@ -138,13 +138,15 @@ const DropDownForm = styled.div`
 `;
 
 const LinktoNIN = styled(Link)`
-  position: absolute;
+  position: relative;
   right: 20px;
   margin-top: 25px;
   color: green;
   font-family: "Manrope-Bold";
   font-size: 13px;
-  display: none;
+  display: flex;
+  margin: 0px auto;
+  transform: translateX(20px);
   justify-content: center;
   gap: 5px;
   width: 150px;
@@ -153,14 +155,6 @@ const LinktoNIN = styled(Link)`
   background-color: white;
   border-radius: 120px;
   transition: all 0.15s ease-in-out;
-
-  @media screen and (max-width: 590px) {
-    position: relative;
-    display: flex;
-    margin: 0px auto;
-    /* margin-bottom: 10px; */
-    transform: translateX(20px);
-  }
 
   &:hover {
     box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
