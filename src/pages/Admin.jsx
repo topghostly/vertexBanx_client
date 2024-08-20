@@ -3,20 +3,33 @@ import styled from "styled-components";
 import currencyConverter from "../../util/balanceConverter";
 import logo from "/images/admin.png";
 import axios from "axios";
+import { tailChase } from "ldrs";
 
 function Admin() {
+  tailChase.register();
+
   const [transactionID, setTransactionID] = useState("");
   const [details, setDetails] = useState();
   const [localDate, setLocalDate] = useState();
+  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
 
   const getDetails = async (id) => {
     setDetails();
+    setLoading(true);
     try {
       const transactionDetails = await axios.get(
         `https://vertex-server-9jyo.onrender.com/v0/api/verify/get-transfer/${id}`
       );
+
+      if (!transactionDetails.data.date.beneficiaryLocation.country) {
+        setLoading(false);
+        return alert("The transcation has not been completed");
+      }
+
       setDetails(transactionDetails.data.date);
-      console.log("The detaisl state is", details);
+      setLoading(false);
+      console.log("The details state is", transactionDetails.data.date);
     } catch (error) {
       console.error(
         "An error occured while geting the single transaction",
@@ -73,7 +86,16 @@ function Admin() {
               />
               <button type="submit">Get details</button>
             </form>
-            <div className="loader"></div>
+
+            {loading && (
+              <div className="loader">
+                <l-tail-chase
+                  size="40"
+                  speed="1.75"
+                  color="black"
+                ></l-tail-chase>{" "}
+              </div>
+            )}
             {details && (
               <Result>
                 <h4>General details</h4>
@@ -102,13 +124,30 @@ function Admin() {
                   </span>
                 </Detail>
                 <Detail>
-                  Country:{" "}
+                  Transaction Country:{" "}
                   <span className="bold">{details.senderLocation.country}</span>
                 </Detail>
                 <Detail>
-                  State:{" "}
+                  Transaction State:{" "}
                   <span className="bold">{details.senderLocation.state}</span>
                 </Detail>
+                <Detail>
+                  Transaction Area:{" "}
+                  <span className="bold">{details.senderLocation.county}</span>
+                </Detail>
+                <Detail>
+                  Transaction Latitude:{" "}
+                  <span className="bold">
+                    {details.senderLocation.latitude}
+                  </span>
+                </Detail>
+                <Detail>
+                  Transaction Longitude:{" "}
+                  <span className="bold">
+                    {details.senderLocation.longitude}
+                  </span>
+                </Detail>
+
                 <h4>Beneficiary details</h4>
                 <Detail>
                   Name:{" "}
@@ -118,15 +157,33 @@ function Admin() {
                   </span>
                 </Detail>
                 <Detail>
-                  Country:{" "}
+                  Transaction Country:{" "}
                   <span className="bold">
                     {details.beneficiaryLocation.country}
                   </span>
                 </Detail>
                 <Detail>
-                  State:{" "}
+                  Transaction State:{" "}
                   <span className="bold">
                     {details.beneficiaryLocation.state}
+                  </span>
+                </Detail>
+                <Detail>
+                  Transaction Area:{" "}
+                  <span className="bold">
+                    {details.beneficiaryLocation.county}
+                  </span>
+                </Detail>
+                <Detail>
+                  Transaction Latitude:{" "}
+                  <span className="bold">
+                    {details.beneficiaryLocation.latitude}
+                  </span>
+                </Detail>
+                <Detail>
+                  Transaction Longitude:{" "}
+                  <span className="bold">
+                    {details.beneficiaryLocation.longitude}
                   </span>
                 </Detail>
               </Result>
@@ -246,6 +303,13 @@ const ViewPort = styled.div`
 
   @media screen and (max-width: 420px) {
     width: 100%;
+  }
+  .loader {
+    width: 100px;
+    aspect-ratio: 1;
+    margin: 0px auto;
+    display: grid;
+    place-content: center;
   }
 
   p.heading {
